@@ -1,0 +1,8 @@
+# Serial parameters for the link with the Control&Systems team
+
+device: '/dev/ttyASM0'
+length: 8
+baud: 230400
+stop: 1
+parity: false
+
