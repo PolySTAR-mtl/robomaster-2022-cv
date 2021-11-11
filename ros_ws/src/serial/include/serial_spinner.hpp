@@ -15,22 +15,33 @@
 
 #include <ros/ros.h>
 
+#include "serial/Rune.h"
+#include "serial/Target.h"
+
 /** \class SerialSpinner
  */
 class SerialSpinner {
   public:
+    /** \brief Constructor
+     */
     SerialSpinner(const std::string& device, unsigned int baud_rate,
                   unsigned int length, unsigned int stop_bits, bool parity,
                   double frequency = 100.);
 
-    ~SerialSpinner() {
-        if (fd != 0) {
-            close(fd);
-        }
-    }
-    void callbackTarget();
+    /** \brief Destructor
+     */
+    ~SerialSpinner();
 
-    void callbackRune();
+    /** \fn callbackTarget
+     * \brief Callback for new target coordinates
+     */
+    void callbackTarget(const serial::TargetConstPtr&);
+
+    /** \fn callbackRune
+     * \brief Callback for rune coordinates
+     * \deprecated This feature is not used as of today
+     */
+    void callbackRune(const serial::RuneConstPtr&);
 
     /** \fn spin
      * \brief Spins, waiting for requests and listens to the serial port

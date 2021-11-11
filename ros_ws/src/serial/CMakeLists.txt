@@ -46,6 +46,7 @@ include_directories(
 
 add_executable(serial_interface
   src/serial_interface.cpp
+  src/serial_spinner.cpp
 )
 
 target_link_libraries(serial_interface

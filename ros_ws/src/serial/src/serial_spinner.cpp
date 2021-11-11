@@ -21,7 +21,7 @@
 
 SerialSpinner::SerialSpinner(const std::string& device, unsigned int _baud,
                              unsigned int _len, unsigned int _stop,
-                             bool _parity, double _freq = 100.)
+                             bool _parity, double _freq)
     : baud_rate(_baud), length(_len), stop_bits(_stop), parity(_parity),
       frequency(_freq) {
     initSerial(device);
