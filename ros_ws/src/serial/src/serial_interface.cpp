@@ -12,4 +12,23 @@
 
 #include "serial_spinner.hpp"
 
-int main(int argc, char** argv) { return 0; }
+int main(int argc, char** argv) {
+    ros::init(argc, argv, "serial");
+    ros::NodeHandle nh;
+
+    std::string device;
+    int baud, length, stop;
+    bool parity;
+
+    if (!nh.getParam("device", device)) {
+        throw std::runtime_error("No serial device specified");
+    }
+    nh.param("length", length, 8);
+    nh.param("baud", baud, 115200);
+    nh.param("stop", stop, 1);
+    nh.param("parity", parity, false);
+
+    SerialSpinner ser(nh, device, baud, length, stop, parity);
+
+    ser.spin();
+}

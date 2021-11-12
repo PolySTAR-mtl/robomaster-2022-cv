@@ -24,8 +24,8 @@ class SerialSpinner {
   public:
     /** \brief Constructor
      */
-    SerialSpinner(const std::string& device, unsigned int baud_rate,
-                  unsigned int length, unsigned int stop_bits, bool parity,
+    SerialSpinner(ros::NodeHandle& nh, const std::string& device, int baud_rate,
+                  int length, int stop_bits, bool parity,
                   double frequency = 100.);
 
     /** \brief Destructor
@@ -55,8 +55,18 @@ class SerialSpinner {
      */
     void initSerial(const std::string& device);
 
+    /** \fn handleSerial
+     * \brief Attempts to read incoming messages from the serial port and
+     * dispatches them
+     */
+    void handleSerial();
+
+    ros::NodeHandle& nh;
+    ros::Publisher pub_hp, pub_switch;
+    ros::Subscriber sub_target, sub_rune;
+
     int fd = -1;
-    unsigned int baud_rate, length, stop_bits;
+    int baud_rate, length, stop_bits;
     bool parity;
     double frequency;
 };

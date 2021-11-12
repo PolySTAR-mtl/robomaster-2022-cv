@@ -17,7 +17,7 @@ The `serial_interface` node **listens** to the following topics :
 - `/serial/target` : Coordinates of the current target, to be passed to the turret;
 - `/serial/rune` : Coordinates of the rune (unused as of today);
 
-The `serial_interface` node **published** to the following topics :
+The `serial_interface` node **publishes** to the following topics :
 
 - `/serial/switch` : Order coming from the pilot to switch target left/right;
 - `/serial/hp` : Health points of the robots;

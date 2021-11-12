@@ -12,6 +12,9 @@
 
 // ROS includes
 
+#include "serial/HP.h"
+#include "serial/SwitchOrder.h"
+
 // OS includes
 
 #include <errno.h>
@@ -19,13 +22,20 @@
 #include <termios.h>
 #include <unistd.h>
 
-SerialSpinner::SerialSpinner(const std::string& device, unsigned int _baud,
-                             unsigned int _len, unsigned int _stop,
-                             bool _parity, double _freq)
-    : baud_rate(_baud), length(_len), stop_bits(_stop), parity(_parity),
+SerialSpinner::SerialSpinner(ros::NodeHandle& n, const std::string& device,
+                             int _baud, int _len, int _stop, bool _parity,
+                             double _freq)
+    : nh(n), baud_rate(_baud), length(_len), stop_bits(_stop), parity(_parity),
       frequency(_freq) {
     initSerial(device);
-    // TODO : Set-up pub/sub
+
+    pub_hp = nh.advertise<serial::HP>("hp", 1);
+    pub_switch = nh.advertise<serial::SwitchOrder>("switch", 1);
+
+    sub_target =
+        nh.subscribe("target", 1, &SerialSpinner::callbackTarget, this);
+
+    sub_rune = nh.subscribe("rune", 1, &SerialSpinner::callbackRune, this);
 }
 
 SerialSpinner::~SerialSpinner() {
@@ -115,4 +125,27 @@ void SerialSpinner::initSerial(const std::string& device) {
         throw std::runtime_error(std::string("Could not set tty attributes") +
                                  strerror(errno));
     }
+}
+
+void SerialSpinner::spin() {
+    ros::Rate rate(frequency);
+
+    while (ros::ok()) {
+        handleSerial();
+
+        rate.sleep();
+        ros::spinOnce();
+    }
+}
+
+void SerialSpinner::handleSerial() {
+    // TODO
+}
+
+void SerialSpinner::callbackTarget(const serial::TargetConstPtr&) {
+    // TODO
+}
+
+void SerialSpinner::callbackRune(const serial::RuneConstPtr&) {
+    // TODO
 }
