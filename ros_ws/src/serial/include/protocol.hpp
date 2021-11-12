@@ -38,6 +38,7 @@ enum class located : uint8_t { YES = 0x59u, NO = 0x4E };
 struct command {
     uint8_t start_byte;
     cmd cmd_id;
+    uint8_t data_len;
 } __attribute__((packed));
 
 struct coords {

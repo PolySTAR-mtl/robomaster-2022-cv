@@ -12,6 +12,8 @@
 
 #include "serial_spinner.hpp"
 
+/** \brief This node serves as the main interface to the serial port
+ */
 int main(int argc, char** argv) {
     ros::init(argc, argv, "serial");
     ros::NodeHandle nh;

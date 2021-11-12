@@ -7,6 +7,7 @@
 // Local includes
 
 #include "serial_spinner.hpp"
+#include "protocol.hpp"
 
 // Std includes
 
@@ -139,7 +140,98 @@ void SerialSpinner::spin() {
 }
 
 void SerialSpinner::handleSerial() {
-    // TODO
+    int bytes;
+    serial::command cmd;
+
+    // ROS messages have to be initialized outside of a switch statement
+    serial::HP hp_msg;
+    serial::SwitchOrder switch_msg;
+
+    // Attempt to read a command
+    bytes = read(fd, &cmd, sizeof(cmd));
+    if (bytes < sizeof(cmd)) {
+        // No incoming command, return immediatly
+        return;
+    }
+
+    if (cmd.start_byte != serial::START_FRAME) {
+        ROS_ERROR("Start frame not recognized, dropping command");
+        return;
+    }
+
+    switch (cmd.cmd_id) {
+    case serial::cmd::SWITCH:
+        serial::target_switch data_sw;
+
+        // Check if data_len is coherent
+        if (cmd.data_len != sizeof(data_sw)) {
+            ROS_ERROR("Incoherent data_len / unexpected data length");
+            return;
+        }
+
+        bytes = read(fd, &data_sw, sizeof(data_sw));
+        if (bytes < sizeof(data_sw)) {
+            ROS_ERROR("Incomplete read on target switch order");
+            return;
+        }
+
+        // Create ROS message
+        switch (data_sw) {
+        case serial::target_switch::NOTHING:
+            switch_msg.order = serial::SwitchOrder::ORDER_NOTHING;
+            break;
+        case serial::target_switch::NEXT:
+            switch_msg.order = serial::SwitchOrder::ORDER_NEXT;
+            break;
+        case serial::target_switch::RIGHT:
+            switch_msg.order = serial::SwitchOrder::ORDER_RIGHT;
+            break;
+        case serial::target_switch::LEFT:
+            switch_msg.order = serial::SwitchOrder::ORDER_LEFT;
+            break;
+        default:
+            ROS_ERROR("Unsupported switch order");
+            break;
+        }
+
+        // Publish to topic
+        pub_switch.publish(switch_msg);
+
+        break;
+    case serial::cmd::HP:
+        serial::hp data_hp;
+
+        // Check if data_len is coherent
+        if (cmd.data_len != sizeof(data_hp)) {
+            ROS_ERROR("Incoherent data_len / unexpected data length");
+            return;
+        }
+
+        bytes = read(fd, &data_hp, sizeof(data_hp));
+        if (bytes < sizeof(data_hp)) {
+            ROS_ERROR("Incomplete read on HP transfer");
+            return;
+        }
+
+        // Create ROS message
+        hp_msg.foe_hero = data_hp.foe_hero;
+        hp_msg.foe_standard1 = data_hp.foe_standard1;
+        hp_msg.foe_standard2 = data_hp.foe_standard2;
+        hp_msg.foe_sentry = data_hp.foe_sentry;
+
+        hp_msg.ally_hero = data_hp.ally_hero;
+        hp_msg.ally_standard1 = data_hp.ally_standard1;
+        hp_msg.ally_standard2 = data_hp.ally_standard2;
+        hp_msg.ally_sentry = data_hp.ally_sentry;
+
+        // Publish to topic
+        pub_hp.publish(hp_msg);
+
+        break;
+    default:
+        ROS_ERROR("Unrecognized/unhandled serial command");
+        return;
+    }
 }
 
 void SerialSpinner::callbackTarget(const serial::TargetConstPtr&) {
