@@ -42,6 +42,7 @@ struct command {
 } __attribute__((packed));
 
 struct coords {
+    command cmd{START_FRAME, cmd::TARGET, sizeof(coords) - sizeof(command)};
     located is_located;
     uint16_t theta;
     int16_t phi;

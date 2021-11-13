@@ -191,7 +191,7 @@ void SerialSpinner::handleSerial() {
             break;
         default:
             ROS_ERROR("Unsupported switch order");
-            break;
+            return;
         }
 
         // Publish to topic
@@ -234,10 +234,19 @@ void SerialSpinner::handleSerial() {
     }
 }
 
-void SerialSpinner::callbackTarget(const serial::TargetConstPtr&) {
-    // TODO
+void SerialSpinner::callbackTarget(const serial::TargetConstPtr& target) {
+    serial::coords msg;
+    msg.is_located = serial::located::YES;
+    msg.theta = target->theta;
+    msg.phi = target->phi;
+    msg.dist = target->dist;
+
+    int bytes = write(fd, &msg, sizeof(msg));
+    if (bytes != sizeof(msg)) {
+        ROS_ERROR("Could not write to serial : %s", strerror(errno));
+    }
 }
 
 void SerialSpinner::callbackRune(const serial::RuneConstPtr&) {
-    // TODO
+    ROS_DEBUG("Unimplemented callback (SerialSpinner::callBackRune");
 }
