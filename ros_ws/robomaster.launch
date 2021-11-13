@@ -1,0 +1,9 @@
+<launch>
+    <!-- Args -->
+    <arg name="workspace" value="$(dirname)"/>
+
+    <!-- Nodes -->
+    <include file="$(find serial)/launch/serial.launch">
+        <arg name="params_path" value="$(arg workspace)/data/param-serial.yaml"/>
+    </include>
+</launch>

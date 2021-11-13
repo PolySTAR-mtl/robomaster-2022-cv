@@ -16,7 +16,7 @@
  */
 int main(int argc, char** argv) {
     ros::init(argc, argv, "serial");
-    ros::NodeHandle nh;
+    ros::NodeHandle nh("serial");
 
     std::string device;
     int baud, length, stop;
