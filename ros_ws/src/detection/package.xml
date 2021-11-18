@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>detection</name>
+  <version>0.1.0</version>
+  <description>Bounding box extraction</description>
+
+  <maintainer email="sebastien.darche@polymtl.ca">Sébastien Darche</maintainer>
+
+  <license>MIT</license>
+
+  <author email="sebastien.darche@polymtl.ca">Sébastien Darche</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export></export>
+
+</package>
