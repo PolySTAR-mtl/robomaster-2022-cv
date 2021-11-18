@@ -4,8 +4,8 @@
 
 . <br>
 ├── README.md <br>
-├── AllianceVsArtisans_BO2_2_0.jpg <br>
-└── AllianceVsArtisans_BO2_2_0.xml <br>
+├── AllianceVsArtisans_BO2_2_1.jpg <br>
+└── AllianceVsArtisans_BO2_2_1.xml <br>
 
 ## Tâche
 
