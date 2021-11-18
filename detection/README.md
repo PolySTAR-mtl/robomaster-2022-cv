@@ -2,10 +2,10 @@
 
 ## Architecture
 
-.
-├── README.md
-├── AllianceVsArtisans_BO2_2_0.jpg
-└── AllianceVsArtisans_BO2_2_0.xml
+. <br>
+├── README.md <br>
+├── AllianceVsArtisans_BO2_2_0.jpg <br>
+└── AllianceVsArtisans_BO2_2_0.xml <br>
 
 ## Tâche
 
