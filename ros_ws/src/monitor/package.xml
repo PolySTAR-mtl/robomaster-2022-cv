@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>monitor</name>
+  <version>0.1.0</version>
+  <description>Video and textual monitor nodes for the computer vision team</description>
+
+  <maintainer email="sebastien.darche@polymtl.ca">Sébastien Darche</maintainer>
+
+  <license>MIT</license>
+
+  <author email="sebastien.darche@polymtl.ca">Sébastien Darche</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export></export>
+
+</package>
+
