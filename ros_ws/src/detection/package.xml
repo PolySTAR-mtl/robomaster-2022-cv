@@ -12,6 +12,8 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <export></export>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>message_runtime</exec_depend>
+  
 
 </package>
