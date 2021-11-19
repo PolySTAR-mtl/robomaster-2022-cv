@@ -23,8 +23,8 @@
 │   ├── python <br>
 │   ├── scripts <br>
 │   └── src <br>
-└── data_processing # Contains file to process data<br>
-    └── label_processing.py <br>
+└── data_processing # Contains file to process data <br>
+&nbsp;&nbsp;&nbsp;&nbsp; └── label_processing.py <br>
 
 ## Tâche
 
