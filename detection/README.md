@@ -2,7 +2,7 @@
 
 ## Architecture
 
-.
+. <br>
 ├── AllianceVsArtisans_BO2_2_1.jpg <br>
 ├── AllianceVsArtisans_BO2_2_1.xml <br>
 ├── README.md <br>
