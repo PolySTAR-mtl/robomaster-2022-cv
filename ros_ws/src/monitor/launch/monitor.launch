@@ -2,8 +2,14 @@
     <!-- Args -->
 
     <!-- Nodes -->
-    <node name="monitor" pkg="monitor" type="video_monitor" output="screen">
+    <node name="monitor_logger" pkg="monitor" type="monitor_logger" output="screen">
+    </node>
+
+    <node name="monitor_video" pkg="monitor" type="monitor_video" output="screen">
+    </node>
+
+    <node name="video_stream" pkg="image_view" type="image_view">
+        <remap from="image" to="/monitor_video/image"/>
     </node>
 
 </launch>
-

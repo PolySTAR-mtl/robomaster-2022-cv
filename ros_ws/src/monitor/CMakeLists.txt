@@ -29,11 +29,19 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(video_monitor
-  src/video_monitor.cpp
+add_executable(monitor_video
+  src/monitor_video.cpp
 )
 
-target_link_libraries(video_monitor
+target_link_libraries(monitor_video
+  ${catkin_LIBRARIES}
+)
+
+add_executable(monitor_logger
+  src/monitor_logger.cpp
+)
+
+target_link_libraries(monitor_logger
   ${catkin_LIBRARIES}
 )
 
@@ -49,4 +57,3 @@ target_link_libraries(video_monitor
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-
