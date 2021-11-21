@@ -1,6 +1,6 @@
 # Serial parameters for the link with the Control&Systems team
 
-device: '/dev/ttyS0'
+device: '/dev/ttyTHS0'
 length: 8
 baud: 230400
 stop: 1
