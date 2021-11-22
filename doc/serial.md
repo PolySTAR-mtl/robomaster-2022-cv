@@ -4,7 +4,7 @@ The serial protocol is defined in the following [Google Document](https://docs.g
 
 The serial settings are as followed (and described in `ros_ws/data/serial.yaml`) :
 
-- Device : `/dev/ttyASM0`
+- Device : `/dev/ttyTHS0`
 - Length : 8 bits
 - Baud rate : 230 400 baud
 - 1 stop bit
