@@ -41,17 +41,18 @@ def convert(size, box):
 
 
 def convert_annotation(set_name, image_id):
-    in_file = open('../dataset/%s/image_annotation/%s.xml' %
-                   (set_name, image_id))
+    in_file_path = f'../dataset/{set_name}/image_annotation/{image_id}.xml'
 
-    tree = ET.parse(in_file)
+    with open(in_file_path) as in_file:
+        tree = ET.parse(in_file)
+
     root = tree.getroot()
 
     # If filename in annotation is different from the image name
     if(root.find('filename').text != image_id+".jpg"):
         return False
 
-    out_file = open('../dataset/%s/labels/%s.txt' % (set_name, image_id), 'w')
+    out_file = open(f'../dataset/{set_name}/labels/{image_id}.txt', 'w')
 
     size = root.find('size')
     w = int(size.find('width').text)
@@ -81,33 +82,36 @@ def convert_annotation(set_name, image_id):
         out_file.write(str(cls_id) + " " +
                        " ".join([str(a) for a in bb]) + '\n')
 
+    out_file.close()
+
     return True
 
 
 if __name__ == "__main__":
 
     for set_name in sets:
-        print("Processing %s..." % (set_name))
+        print(f'Processing {set_name}...')
 
-        if not os.path.exists('../dataset/%s' % (set_name)):
-            print("No directory %s" % (set_name))
+        if not os.path.exists(f'../dataset/{set_name}'):
+            print(f"No directory {set_name}")
             continue
 
-        if not os.path.exists('../dataset/%s/labels/' % (set_name)):
-            os.makedirs('../dataset/%s/labels/' % (set_name))
+        if not os.path.exists(f'../dataset/{set_name}/labels/'):
+            os.makedirs(f'../dataset/{set_name}/labels/')
 
         image_ids = [f for f in listdir(
-            '../dataset/%s/image/' % (set_name)) if isfile(join('../dataset/%s/image/' % (set_name), f))]
+            f'../dataset/{set_name}/image/') if isfile(join(f'../dataset/{set_name}/image/', f))]
 
         image_ids_ = [splitext(f)[0] for f in image_ids]
 
-        list_file = open('../dataset/%s/%s.txt' % (set_name, set_name), 'w')
+        list_file = open(f'../dataset/{set_name}/{set_name}.txt', 'w')
 
         for i, image_id in enumerate(image_ids_):
             if((i/len(image_ids)*100) % 10 == 0):
-                print("{:0.2f}% done".format(i/len(image_ids)*100))
+                print('{:0.2f}% done'.format(i / len(image_ids) * 100))
 
             if(convert_annotation(set_name, image_id)):
-                list_file.write('../dataset/%s/image/%s.jpg\n' %
-                                (set_name, image_id))
+                list_file.write(
+                    f'../dataset/{set_name}/image/{image_id}.jpg\n')
+
         list_file.close()
