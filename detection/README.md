@@ -25,8 +25,8 @@
 │   └── src <br>
 ├── data_processing # Contains file to process data <br>
 │   └── label_processing.py <br>
-└── dataset <br> # Directory to put the datasets
-&nbsp;&nbsp;&nbsp;&nbsp; └── robomaster_Central China Regional Competition
+└── dataset # Directory to put the datasets <br> 
+&nbsp;&nbsp;&nbsp;&nbsp; └── robomaster_Central China Regional Competition <br> 
 
 ## Tâche
 
