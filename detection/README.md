@@ -23,8 +23,10 @@
 │   ├── python <br>
 │   ├── scripts <br>
 │   └── src <br>
-└── data_processing # Contains file to process data <br>
-&nbsp;&nbsp;&nbsp;&nbsp; └── label_processing.py <br>
+├── data_processing # Contains file to process data <br>
+│   └── label_processing.py <br>
+└── dataset <br> # Directory to put the datasets
+&nbsp;&nbsp;&nbsp;&nbsp; └── robomaster_Central China Regional Competition
 
 ## Tâche
 
