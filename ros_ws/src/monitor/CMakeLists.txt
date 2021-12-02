@@ -7,6 +7,8 @@ add_compile_options(-std=c++17)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
+  sensor_msgs
+  detection
 )
 
 
@@ -16,6 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(
   INCLUDE_DIRS include
+  CATKIN_DEPENDS detection
 )
 
 ###########
@@ -30,7 +33,8 @@ include_directories(
 )
 
 add_executable(monitor_video
-  src/monitor_video.cpp
+  src/monitor_video_node.cpp
+  src/video_monitor.cpp
 )
 
 target_link_libraries(monitor_video
