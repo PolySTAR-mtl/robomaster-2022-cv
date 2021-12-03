@@ -51,7 +51,7 @@
 ## How to use
 
 You need to `make` the darknet repository on your system to use it.
-You should only set the flags `GPU`, `CUDNN` and `OPENCV` to `1` depending if you actually use them.
+You should only set the flags `GPU`, `CUDNN` and `OPENCV` to `1` depending if you actually use them. See https://pjreddie.com/darknet/install/ for more information.
 You also need to change the `ARCH=` flag in order to set the configuration used of your system (for Jetson Xavier: `ARCH= -gencode arch=compute_72,code=[sm_72,compute_72]`)
 
 To train, either put all the raw dataset into the `dataset` directory and modify `label_processing.py`. Otherwise, unpack the archive of the clean dji_roco dataset (TO BE ADDED SOMEWHERE). Copy/Paste all the images and .xml files into `data`.
