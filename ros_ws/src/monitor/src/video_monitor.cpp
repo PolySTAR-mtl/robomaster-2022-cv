@@ -8,6 +8,8 @@
 
 #include "video_monitor.hpp"
 
+#include <cv_bridge/cv_bridge.h>
+
 VideoMonitor::VideoMonitor(ros::NodeHandle& n) : nh(n) {
     pub_im = nh.advertise<sensor_msgs::Image>("image_out", 1);
 

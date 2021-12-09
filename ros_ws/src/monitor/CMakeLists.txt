@@ -11,6 +11,8 @@ find_package(catkin REQUIRED COMPONENTS
   detection
 )
 
+find_package(OpenCV)
+
 
 ###################################
 ## catkin specific configuration ##
@@ -30,6 +32,7 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
 add_executable(monitor_video
@@ -39,6 +42,7 @@ add_executable(monitor_video
 
 target_link_libraries(monitor_video
   ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
 )
 
 add_executable(monitor_logger
