@@ -9,6 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   detection
+  cv_bridge
 )
 
 find_package(OpenCV)

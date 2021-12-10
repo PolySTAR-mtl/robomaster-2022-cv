@@ -1,5 +1,6 @@
 <launch>
     <!-- Args -->
+    <arg name="headless" default="false"/>
 
     <!-- Nodes -->
     <node name="monitor_logger" pkg="monitor" type="monitor_logger" output="screen">
@@ -8,7 +9,7 @@
     <node name="monitor_video" pkg="monitor" type="monitor_video" output="screen">
     </node>
 
-    <node name="video_stream" pkg="image_view" type="image_view">
+    <node if="$(eval not headless)" name="video_stream" pkg="image_view" type="image_view">
         <remap from="image" to="/monitor_video/image"/>
     </node>
 

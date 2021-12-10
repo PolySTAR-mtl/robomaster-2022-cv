@@ -11,6 +11,8 @@
 
 // Ros includes
 
+#include <opencv2/core/core.hpp>
+
 #include <ros/ros.h>
 
 #include "detection/Detections.h"
@@ -38,6 +40,7 @@ class VideoMonitor {
     ros::Subscriber sub_cam, sub_detections;
 
     // Internals
+    cv::Mat curr_image;
 };
 
 #endif
