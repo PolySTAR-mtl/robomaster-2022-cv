@@ -9,6 +9,9 @@
 
 // Std includes
 
+#include <random>
+#include <unordered_map>
+
 // Ros includes
 
 #include <opencv2/core/core.hpp>
@@ -34,6 +37,15 @@ class VideoMonitor {
     void callbackDetections(const detection::DetectionsConstPtr&);
 
   private:
+    /** \fn getColor
+     * \brief Returns the color corresponding to a class, or generates on
+     *
+     * \details Class "colors" are generated randomly and then stored in a map
+     * to ensure that the same color is consistently attributed to the same
+     * class.
+     */
+    cv::Scalar getColor(uint8_t cls);
+
     // ROS
     ros::NodeHandle& nh;
     ros::Publisher pub_im;
@@ -41,6 +53,8 @@ class VideoMonitor {
 
     // Internals
     cv::Mat curr_image;
+    std::unordered_map<uint8_t, cv::Scalar> colormap;
+    std::random_device randgen;
 };
 
 #endif

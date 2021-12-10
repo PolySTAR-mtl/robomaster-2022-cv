@@ -8,6 +8,8 @@
 
 #include "video_monitor.hpp"
 
+// Ros includes
+
 #include <cv_bridge/cv_bridge.h>
 
 // ----- Consts ----- //
@@ -15,7 +17,7 @@
 
 constexpr int MONITOR_FONT_SIZE = 5;
 constexpr auto MONITOR_FONT_FACE = cv::FONT_HERSHEY_SIMPLEX;
-const static cv::Scalar MONITOR_FONT_COLOR(0., 0., 0.);
+const static cv::Scalar MONITOR_FONT_COLOR(255., 255., 255.);
 constexpr int MONITOR_FONT_PADDING = 5;
 
 // ----- Methods ----- //
@@ -35,6 +37,17 @@ void VideoMonitor::callbackImage(const sensor_msgs::ImageConstPtr& im) {
     curr_image = img_bridged->image.clone();
 }
 
+cv::Scalar VideoMonitor::getColor(uint8_t cls) {
+    auto search = colormap.find(cls);
+    if (search != std::end(colormap)) {
+        return search->second;
+    } else {
+        cv::Scalar new_color(randgen() % 255, randgen() % 255, randgen() % 255);
+        colormap.insert({cls, new_color});
+        return new_color;
+    }
+}
+
 void VideoMonitor::callbackDetections(
     const detection::DetectionsConstPtr& dets) {
     if (curr_image.empty()) {
@@ -44,8 +57,7 @@ void VideoMonitor::callbackDetections(
 
     auto img_rects = curr_image.clone();
     for (auto& det : dets->detections) {
-        // TODO : Randomize colors
-        auto color = cv::Scalar(255, 255, 255);
+        auto color = getColor(det.cls);
         cv::Point p1{static_cast<int>(det.x - det.w / 2),
                      static_cast<int>(det.y - det.h / 2)};
         cv::Point p2{static_cast<int>(det.x + det.w / 2),
