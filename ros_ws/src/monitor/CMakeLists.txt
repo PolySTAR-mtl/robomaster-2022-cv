@@ -9,7 +9,10 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   detection
+  cv_bridge
 )
+
+find_package(OpenCV)
 
 
 ###################################
@@ -30,6 +33,7 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
 add_executable(monitor_video
@@ -39,6 +43,7 @@ add_executable(monitor_video
 
 target_link_libraries(monitor_video
   ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
 )
 
 add_executable(monitor_logger
