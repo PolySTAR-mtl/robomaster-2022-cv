@@ -48,6 +48,18 @@
 └── dataset # Directory to put the datasets <br> 
 &nbsp;&nbsp;&nbsp;&nbsp;└── robomaster_Central China Regional Competition <br>
 
+## Small note on submodules
+
+The `darknet` [repository](git@github.com:AlexeyAB/darknet.git) is included as a git submodule. In
+order to download the submodule on your machine, execute the following commands :
+
+```bash
+git submodule init  # Create submodule index
+git submodule update  # Download the actual submodules
+```
+
+A git submodule is basically just a pointer to a specific commit from another repo.
+
 ## How to use
 
 You need to `make` the darknet repository on your system to use it.
