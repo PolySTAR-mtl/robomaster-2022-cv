@@ -22,12 +22,19 @@ constexpr int MONITOR_FONT_PADDING = 5;
 
 // ----- Methods ----- //
 
-VideoMonitor::VideoMonitor(ros::NodeHandle& n) : nh(n) {
+VideoMonitor::VideoMonitor(ros::NodeHandle& n, const std::string& class_name)
+    : nh(n), default_name(class_name) {
     pub_im = nh.advertise<sensor_msgs::Image>("image_out", 1);
 
     sub_cam = nh.subscribe("image_in", 1, &VideoMonitor::callbackImage, this);
     sub_detections =
         nh.subscribe("detections", 1, &VideoMonitor::callbackDetections, this);
+
+    // Load classmap from parameter server
+    if (!nh.getParam("/classmap", classmap)) {
+        std::cout << "No classmap found, using default name " << default_name
+                  << '\n';
+    }
 }
 
 void VideoMonitor::callbackImage(const sensor_msgs::ImageConstPtr& im) {
@@ -45,6 +52,14 @@ cv::Scalar VideoMonitor::getColor(uint8_t cls) {
         cv::Scalar new_color(randgen() % 255, randgen() % 255, randgen() % 255);
         colormap.insert({cls, new_color});
         return new_color;
+    }
+}
+
+const std::string& VideoMonitor::getClassName(uint8_t cls) {
+    if (cls >= classmap.size()) {
+        return default_name;
+    } else {
+        return classmap[cls];
     }
 }
 
@@ -71,9 +86,7 @@ void VideoMonitor::callbackDetections(
         cv::rectangle(img_rects, p1, p2, color, cv::FILLED);
         p1.y += MONITOR_FONT_PADDING + MONITOR_FONT_SIZE;
 
-        // TOOD : map det.cls to the corresponding name instead of printing
-        // "bounding box"
-        cv::putText(img_rects, "Bounding box", p1, MONITOR_FONT_FACE,
+        cv::putText(img_rects, getClassName(det.cls), p1, MONITOR_FONT_FACE,
                     static_cast<double>(MONITOR_FONT_SIZE) / 12.,
                     cv::Scalar(MONITOR_FONT_COLOR));
     }

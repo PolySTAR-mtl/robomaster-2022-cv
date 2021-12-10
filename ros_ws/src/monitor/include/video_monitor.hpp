@@ -23,7 +23,8 @@
 
 class VideoMonitor {
   public:
-    VideoMonitor(ros::NodeHandle& n);
+    VideoMonitor(ros::NodeHandle& n,
+                 const std::string& default_class = "Error class");
 
     // ----- ROS Callbacks ----- //
     /** \fn callbackImage
@@ -46,6 +47,14 @@ class VideoMonitor {
      */
     cv::Scalar getColor(uint8_t cls);
 
+    /** \fn getClassName
+     * \brief Returns the name associated to a class number
+     *
+     * \details Class names are loaded from the parameter server, and cached in
+     * a vector
+     */
+    const std::string& getClassName(uint8_t cls);
+
     // ROS
     ros::NodeHandle& nh;
     ros::Publisher pub_im;
@@ -54,7 +63,10 @@ class VideoMonitor {
     // Internals
     cv::Mat curr_image;
     std::unordered_map<uint8_t, cv::Scalar> colormap;
+    std::vector<std::string> classmap;
     std::random_device randgen;
+
+    const std::string default_name;
 };
 
 #endif
