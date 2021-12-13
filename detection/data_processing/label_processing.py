@@ -49,7 +49,7 @@ def convert_annotation(set_name, image_id):
     root = tree.getroot()
 
     # If filename in annotation is different from the image name
-    if(root.find('filename').text != image_id+".jpg"):
+    if(root.find('filename').text != image_id+".jpg" and root.find('filename').text != image_id+".png"):
         return False
 
     out_file = open(f'../dataset/{set_name}/labels/{image_id}.txt', 'w')

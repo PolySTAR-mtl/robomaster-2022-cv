@@ -1,0 +1,5 @@
+classes = 6
+train = data/train_data.txt
+valid = data/test_data.txt
+names = data/dji.names
+backup = data/backup
