@@ -241,6 +241,9 @@ void SerialSpinner::callbackTarget(const serial::TargetConstPtr& target) {
     msg.phi = target->phi;
     msg.dist = target->dist;
 
+    std::cout << "Target : " << msg.theta << ' ' << msg.phi << ' ' << msg.dist
+              << '\n';
+
     int bytes = write(fd, &msg, sizeof(msg));
     if (bytes != sizeof(msg)) {
         ROS_ERROR("Could not write to serial : %s", strerror(errno));

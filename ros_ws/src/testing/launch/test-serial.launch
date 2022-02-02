@@ -1,0 +1,8 @@
+<launch>
+    <!-- Args -->
+
+    <remap from="/serial_testing/target" to="/serial/target"/>
+    <!-- Nodes -->
+    <node name="serial_testing" pkg="testing" type="serial_testing" output="screen">
+    </node>
+</launch>
