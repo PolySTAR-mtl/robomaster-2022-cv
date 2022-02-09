@@ -1,8 +1,0 @@
-<launch>
-    <!-- Args -->
-
-    <!-- Nodes -->
-    <node name="detection" pkg="detection" type="detect.py" output="screen">
-    </node>
-
-</launch>

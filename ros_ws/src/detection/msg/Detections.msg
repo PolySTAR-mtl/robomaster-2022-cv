@@ -3,3 +3,6 @@
 
 Header header
 Detection[] detections
+
+# frame
+uint8 frame
