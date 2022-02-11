@@ -1,0 +1,83 @@
+<?xml version="1.0" ?><annotation>
+    <filename>AllianceVsArtisans_BO2_2_1_3.png</filename>
+    <version>v3.0</version>
+    <review_status>passed</review_status>
+    <time_elapsed>120</time_elapsed>
+    <img_label/>
+    <size>
+        <width>217</width>
+        <height>223</height>
+    </size>
+    <padding_pxt>
+        <padding_x>76</padding_x>
+        <padding_y>43</padding_y>
+    </padding_pxt>
+    
+    
+    
+    
+    <object>
+        <name>armor</name>
+        <armor_class>1</armor_class>
+        <armor_color>red</armor_color>
+        <generated>0</generated>
+        <is_incorrect>0</is_incorrect>
+        <bndbox>
+            <xmin>145</xmin>
+            <ymin>127</ymin>
+            <xmax>165</xmax>
+            <ymax>150</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>armor</name>
+        <armor_class>1</armor_class>
+        <armor_color>red</armor_color>
+        <generated>0</generated>
+        <is_incorrect>0</is_incorrect>
+        <bndbox>
+            <xmin>131</xmin>
+            <ymin>117</ymin>
+            <xmax>150</xmax>
+            <ymax>136</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>armor</name>
+        <armor_class>1</armor_class>
+        <armor_color>red</armor_color>
+        <generated>0</generated>
+        <is_incorrect>0</is_incorrect>
+        <bndbox>
+            <xmin>79</xmin>
+            <ymin>143</ymin>
+            <xmax>114</xmax>
+            <ymax>161</ymax>
+        </bndbox>
+    </object>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <object>
+        <name>car</name>
+        <difficulty>0</difficulty>
+        <generated>0</generated>
+        <is_incorrect>0</is_incorrect>
+        <bndbox>
+            <xmin>50</xmin>
+            <ymin>50</ymin>
+            <xmax>167</xmax>
+            <ymax>173</ymax>
+        </bndbox>
+    </object>
+    
+    
+    
+    
+</annotation>
