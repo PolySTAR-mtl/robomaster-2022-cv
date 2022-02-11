@@ -53,7 +53,7 @@ The pre-processing consists of two steps: 1) using `image_zooming.py` in order t
 
 ### A note on the labels
 
-Currently, we only consider the following class: `classes = ["red_armor", "blue_armor", "grey_armor", "base", "watcher", "car"]` (see `label_processing.py`), where "car" means robot for dji. If you want to include more classes, just add them in this list. However, any string you add in this list should be in the .xml file provided by dji (in `image_annotation/`).Here, we don't distinguish in between robots type (standard, hero, engineer...). If you want to include them, you should use the armor number and thus modify the scripts.
+Currently, we only consider the following class: `classes = ["red_armor", "blue_armor", "grey_armor", "base", "watcher", "car"]` (see `label_processing.py`), where "car" means robot for dji. If you want to include more classes, just add them in this list. However, any string you add in this list should be in the .xml file provided by dji (in `image_annotation/`). Here, we don't distinguish in between robots type (standard, hero, engineer...). If you want to include them, you should use the armor number and thus modify the scripts.
 
 ### Configuration files
 
@@ -91,6 +91,8 @@ If you want more information on how to parametrize the ".cfg" file of the model 
 WARNING: The training will take several hours, even on GPU. Make sure you have a computer that can do so or use the Jetson.
 
 ## Testing
+
+If you want to just test the model based on the configuration that alreaady exists, you can download the weights avaiable on the drive (RoboMaster -> Equipe-Computer vision -> weights -> yolov3_custom_best.weights). On the same path you also have the .cfg file used (same as the one presented in the tree).
 
 Command example (to execute at the root of `detection/`):
 
