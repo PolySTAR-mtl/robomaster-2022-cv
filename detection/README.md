@@ -7,46 +7,24 @@
 ├── AllianceVsArtisans_BO2_2_1.xml <br>
 ├── README.md <br>
 ├── darknet # External lib, You should just modify the Makefile as you need it before building <br>
-│   ├── 3rdparty <br>
-│   ├── CMakeLists.txt <br>
-│   ├── DarknetConfig.cmake.in <br>
-│   ├── LICENSE <br>
-│   ├── Makefile <br>
-│   ├── README.md <br>
-│   ├── backup <br>
-│   ├── build <br>
-│   ├── build.ps1 <br>
-│   ├── cfg <br>
-│   ├── cmake <br>
-│   ├── darknet <br>
-│   ├── darknet.py <br>
-│   ├── darknet_images.py <br>
-│   ├── darknet_video.py <br>
-│   ├── data <br>
-│   ├── image_yolov3.sh <br>
-│   ├── image_yolov4.sh <br>
-│   ├── include <br>
-│   ├── json_mjpeg_streams.sh <br>
-│   ├── net_cam_v3.sh <br>
-│   ├── net_cam_v4.sh <br>
-│   ├── obj <br>
-│   ├── results <br>
-│   ├── scripts <br>
-│   ├── src <br>
-│   ├── vcpkg.json <br>
-│   ├── video_yolov3.sh <br>
-│   └── video_yolov4.sh <br>
 ├── data # where the data for training/testing should be ! <br>
-│   ├── backup <br>
+│   ├── backup/ <br>
 │   ├── dji.data <br>
 │   ├── dji.names <br>
+│   ├── labels/ <br>
 │   ├── test_data.txt <br>
 │   ├── train_data.txt <br>
 │   └── yolov3_custom.cfg <br>
 ├── data_processing # Contains file to process data <br>
 │   └── label_processing.py <br>
 └── dataset # Directory to put the datasets <br> 
-&nbsp;&nbsp;&nbsp;&nbsp;└── robomaster_Central China Regional Competition <br>
+│   └── robomaster_Central China Regional Competition <br>
+│&nbsp;&nbsp;&nbsp;&nbsp;   ├── image <br>
+│&nbsp;&nbsp;&nbsp;&nbsp;   ├── image_annotation <br>
+│&nbsp;&nbsp;&nbsp;&nbsp;   ├── robomaster_Central China Regional Competition.txt <br>
+└── exemple # Some example of prediction over a video <br>
+&nbsp;&nbsp;&nbsp;&nbsp;├── vid_test.mp4 <br>
+&nbsp;&nbsp;&nbsp;&nbsp;└── vid_test_pred.avi <br>
 
 ## Small note on submodules
 
