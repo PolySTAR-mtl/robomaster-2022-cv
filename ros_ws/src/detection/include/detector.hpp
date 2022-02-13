@@ -22,6 +22,8 @@ class Detector {
     Detector(ros::NodeHandle& nh, const std::string& datacfg,
              const std::string& config_path, const std::string& weights_path);
 
+    ~Detector();
+
     /** \fn imageCallback
      * \brief Callback for incoming images (from camera)
      */
@@ -40,7 +42,8 @@ class Detector {
 
     /** PIml idiom
      * \brief Not a fan of PImpl, but in this case it prevents Darknet from
-     * leaking a horrendous amount of symbols
+     * leaking a horrendous amount of symbols in the default namespace ...
+     * (Thanks, C)
      */
     struct impl;
     std::unique_ptr<impl> p;

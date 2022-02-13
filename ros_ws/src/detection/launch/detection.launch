@@ -1,8 +1,11 @@
 <launch>
     <!-- Args -->
+    <arg name="params_path"/>
 
     <!-- Nodes -->
-    <node name="detection" pkg="detection" type="detect.py" output="screen">
+    <node name="detection" pkg="detection" type="detection" output="screen">
+        <!-- Load parameters from file -->
+        <rosparam command="load" file="$(arg params_path)"/>
     </node>
 
 </launch>
