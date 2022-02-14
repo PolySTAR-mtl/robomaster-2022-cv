@@ -10,7 +10,7 @@
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "detector");
-    ros::NodeHandle nh;
+    ros::NodeHandle nh("~");
 
     std::string datacfg, config_path, weights_path;
     if (!nh.getParam("net/datacfg", datacfg)) {

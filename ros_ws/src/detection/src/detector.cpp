@@ -8,6 +8,7 @@
 
 // Std includes
 
+#include <fstream>
 #include <vector>
 
 // Darknet
@@ -55,10 +56,23 @@ void Detector::setupNet(const std::string& datacfg,
         throw std::runtime_error(
             "Different number of classes between network and label file");
     }
+
+    std::cout << "Detector : Ready\n";
 }
 
 void Detector::loadLabels() {
-    // TODO (is it useful though ?)
+    std::string path;
+    if (!nh.getParam("net/labels", path)) {
+        return;
+    }
+
+    std::ifstream labels_file(path);
+
+    std::string buffer;
+    while (std::getline(labels_file, buffer)) {
+        p->labels.emplace_back(buffer);
+        buffer = "";
+    }
 }
 
 void Detector::imageCallback(const sensor_msgs::ImagePtr& img) {
