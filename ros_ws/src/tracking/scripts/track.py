@@ -5,10 +5,8 @@
 @author Tzu-yi Chiu <tzuyi.chiu@gmail.com>
 """
 
-PROJECT_FOLDER = os.path.dirname(os.path.realpath(__file__))
-DATASET_FOLDER = os.path.join(PROJECT_FOLDER, 'TP3_data')
-VIDEO_FOLDER = os.path.join(DATASET_FOLDER, 'frames')
-
+import os
+import numpy as np
 import rospy
 
 from sensor_msgs.msg import Image
@@ -16,6 +14,8 @@ from detection.msg import Detections, Detection as DetectionROS
 from tracking.msg import Tracklets, Tracklet
 
 from motpy import MultiObjectTracker, Track, Detection as DetectionMOT
+
+dt = 1/24 # TODO : changer
 
 class Tracker:
     def __init__(self):
@@ -32,7 +32,7 @@ class Tracker:
                     'q_var_size': 100., 'r_var_size': 10.,
                     'q_var_pos': 5000., 'r_var_pos': 0.1}
         
-        self.mot = MultiObjectTracker(model_spec=model_spec)
+        self.mot = MultiObjectTracker(dt, model_spec=model_spec)
 
     def detections_callback(self, detections_ros: Detections) -> Tracklets:
         detections_mot = [self.det_ros2mot(detection_ros) 
