@@ -35,6 +35,8 @@ Detector::Detector(ros::NodeHandle& n, const std::string& datacfg,
                    const std::string& weights_path)
     : nh(n), p(std::make_unique<impl>()) {
     setupNet(datacfg, config_path, weights_path);
+
+    sub_img = nh.subscribe("image_in", 1, &Detector::imageCallback, this);
 }
 
 Detector::~Detector() = default;
