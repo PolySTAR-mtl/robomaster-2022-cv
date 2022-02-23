@@ -68,29 +68,49 @@ void Detector::loadLabels() {
         return;
     }
 
+    std::cout << "Loading labels : \n";
+
     std::ifstream labels_file(path);
 
     std::string buffer;
     while (std::getline(labels_file, buffer)) {
         p->labels.emplace_back(buffer);
+        std::cout << '\t' << buffer << '\n';
         buffer = "";
     }
+}
+
+image matToImage(cv::Mat& mat) {
+    // From darknet/src/image_opencv.cpp
+    int w = mat.cols;
+    int h = mat.rows;
+    int c = mat.channels();
+    image im = make_image(w, h, c);
+    unsigned char* data = (unsigned char*)mat.data;
+    int step = mat.step;
+    for (int y = 0; y < h; ++y) {
+        for (int k = 0; k < c; ++k) {
+            for (int x = 0; x < w; ++x) {
+
+                im.data[k * w * h + y * w + x] =
+                    data[y * step + x * c + k] / 255.0f;
+            }
+        }
+    }
+    return im;
 }
 
 void Detector::imageCallback(const sensor_msgs::ImagePtr& img) {
     constexpr float ratio = 1.f / 256.f;
 
+    std::cout << "Incoming frame : " << img->header.seq << '\n';
+
     auto img_opencv = cv_bridge::toCvCopy(img);
-    cv::Mat img_float;
 
     // TODO : check conversion
-    img_opencv->image.convertTo(img_float, CV_32F, ratio);
+    // img_opencv->image.convertTo(img_float, CV_32F, ratio);
 
-    image im;
-    im.c = p->net.c;
-    im.data = reinterpret_cast<float*>(img_opencv->image.data);
-    im.w = img_opencv->image.rows;
-    im.h = img_opencv->image.cols;
+    image im = matToImage((*img_opencv).image);
 
     image sized = resize_image(im, p->net.w, p->net.h);
 
@@ -109,4 +129,5 @@ void Detector::imageCallback(const sensor_msgs::ImagePtr& img) {
 
     free_detections(dets, nboxes);
     free_image(sized);
+    free_image(im);
 }
