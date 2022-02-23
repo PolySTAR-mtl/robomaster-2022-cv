@@ -13,12 +13,37 @@
 
 // Darknet
 
+// Stupid namespace clash between Darknet and ROS messages, so this quick hack
+// allows the file to compile. Since darknet is written in C and no mangling is
+// done, this doesn't cause linker issues (so far!)
+#define detection detection_darknet
 #include "darknet.h"
 #include "parser.h"
+#undef detection
 
 // ROS Includes
 
+#include "detection/Detections.h"
 #include <cv_bridge/cv_bridge.h>
+
+namespace {
+// Darknet interface functions
+
+/** \fn findBestClass
+ * \brief Returns the best class index from an array of scores
+ */
+int findBestClass(float* probabilities, int nclass, float treshold) {
+    float curr_max = 0.f;
+    int curr_idx = -1;
+    for (auto i = 0u; i < nclass; ++i) {
+        if (probabilities[i] > curr_max && probabilities[i] >= treshold) {
+            curr_max = probabilities[i];
+            curr_idx = i;
+        }
+    }
+    return curr_idx;
+}
+} // namespace
 
 struct Detector::impl {
     // TODO : fetch from parameter server
@@ -37,6 +62,8 @@ Detector::Detector(ros::NodeHandle& n, const std::string& datacfg,
     setupNet(datacfg, config_path, weights_path);
 
     sub_img = nh.subscribe("image_in", 1, &Detector::imageCallback, this);
+
+    pub_detections = nh.advertise<detection::Detections>("detections", 1);
 }
 
 Detector::~Detector() = default;
@@ -119,13 +146,36 @@ void Detector::imageCallback(const sensor_msgs::ImagePtr& img) {
 
     // Fetch boxes
     int nboxes;
-    detection* dets = get_network_boxes(&p->net, im.w, im.h, p->tresh,
-                                        p->hier_tresh, 0, 1, &nboxes, 0);
+    detection_darknet* dets = get_network_boxes(
+        &p->net, im.w, im.h, p->tresh, p->hier_tresh, 0, 1, &nboxes, 0);
 
+    detection::Detections msg;
     // Construct ROS message
     for (auto i = 0; i < nboxes; ++i) {
-        std::cout << dets[i].best_class_idx;
+        auto& d = dets[i];
+
+        for (auto j = 0; j < p->labels.size(); ++j) {
+            std::cout << d.prob[j] << ' ';
+        }
+
+        d.best_class_idx = findBestClass(d.prob, p->labels.size(), p->tresh);
+
+        std::cout << ", best " << p->labels[d.best_class_idx] << '\n';
+
+        detection::Detection det;
+        det.x = d.bbox.x;
+        det.y = d.bbox.y;
+        det.w = d.bbox.w;
+        det.h = d.bbox.h;
+        det.cls = d.best_class_idx;
+        det.confidence = d.prob[det.cls];
+
+        msg.detections.push_back(det);
     }
+
+    std::cout << '\n';
+
+    pub_detections.publish(msg);
 
     free_detections(dets, nboxes);
     free_image(sized);
