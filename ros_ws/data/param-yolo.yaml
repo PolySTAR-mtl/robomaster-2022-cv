@@ -3,7 +3,7 @@
 net:
   datacfg: '$(arg workspace)/../detection/data/dji.data'
   config_path: '$(arg workspace)/../detection/data/yolov3_custom.cfg'
-  weights: '$(arg workspace)/../detection/data/yolov3_custom_1000.weights'
+  weights: '$(arg workspace)/../detection/data/yolov3_custom_best.weights'
   labels: '$(arg workspace)/../detection/data/dji.names'
   
   nms: 0.45
