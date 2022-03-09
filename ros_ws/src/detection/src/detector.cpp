@@ -145,7 +145,7 @@ void Detector::imageCallback(const sensor_msgs::ImagePtr& img) {
     network_predict(p->net, sized.data);
 
     // Fetch boxes
-    int nboxes;
+    int nboxes = 0;
     detection_darknet* dets = get_network_boxes(
         &p->net, im.w, im.h, p->tresh, p->hier_tresh, 0, 1, &nboxes, 0);
 
@@ -159,6 +159,11 @@ void Detector::imageCallback(const sensor_msgs::ImagePtr& img) {
         }
 
         d.best_class_idx = findBestClass(d.prob, p->labels.size(), p->tresh);
+
+        if (d.best_class_idx == -1) {
+            // No best match found : continue handling rest of detection
+            continue;
+        }
 
         std::cout << ", best " << p->labels[d.best_class_idx] << '\n';
 
