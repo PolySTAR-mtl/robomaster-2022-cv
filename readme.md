@@ -23,6 +23,14 @@ competition, organized by DJI.
 
 ### Detection
 
+This project relies on the `darknet` library, which is included as a submodule. It is required
+to build the ROS workspace. You can either install the library (`make install`) in a common
+place, or specify the path of the CMakeLists.txt file when building :
+
+```bash
+catkin_make -DDARKNET_PATH=../detection/darknet
+```
+
 **TODO** : list of package requirements
 
 ## Code guidelines
