@@ -17,7 +17,7 @@
  */
 int main(int argc, char** argv) {
     ros::init(argc, argv, "monitor_video");
-    ros::NodeHandle nh;
+    ros::NodeHandle nh("~");
 
     VideoMonitor monitor(nh);
 

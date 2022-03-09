@@ -6,11 +6,14 @@
     <node name="monitor_logger" pkg="monitor" type="monitor_logger" output="screen">
     </node>
 
+
+    <remap from="/monitor_video/image_in" to="/detection/image_in"/>
+    <remap from="/monitor_video/detections" to="/detection/detections"/>
     <node name="monitor_video" pkg="monitor" type="monitor_video" output="screen">
     </node>
 
     <node if="$(eval not headless)" name="video_stream" pkg="image_view" type="image_view">
-        <remap from="image" to="/monitor_video/image"/>
+        <remap from="image" to="/monitor_video/image_out"/>
     </node>
 
 </launch>
