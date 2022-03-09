@@ -168,10 +168,10 @@ void Detector::imageCallback(const sensor_msgs::ImagePtr& img) {
         std::cout << ", best " << p->labels[d.best_class_idx] << '\n';
 
         detection::Detection det;
-        det.x = d.bbox.x;
-        det.y = d.bbox.y;
-        det.w = d.bbox.w;
-        det.h = d.bbox.h;
+        det.x = d.bbox.x * im.w;
+        det.y = d.bbox.y * im.h;
+        det.w = d.bbox.w * im.w;
+        det.h = d.bbox.h * im.h;
         det.cls = d.best_class_idx;
         det.confidence = d.prob[det.cls];
 
