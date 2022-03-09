@@ -6,4 +6,10 @@
     <include file="$(find serial)/launch/serial.launch">
         <arg name="params_path" value="$(arg workspace)/data/param-serial.yaml"/>
     </include>
+
+    <include file="$(find detection)/launch/detection.launch">
+        <arg name="workspace" value="$(arg workspace)"/>
+        <arg name="params_path" value="$(arg workspace)/data/param-yolo.yaml"/>
+    </include>
+
 </launch>

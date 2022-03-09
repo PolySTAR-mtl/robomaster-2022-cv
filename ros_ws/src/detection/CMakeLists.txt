@@ -10,7 +10,16 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   message_generation
+  cv_bridge
 )
+
+if(DARKNET_PATH)
+  add_subdirectory(${CMAKE_SOURCE_DIR}/../${DARKNET_PATH} ${CMAKE_CURRENT_BINARY_DIR}/darknet)
+  set(Darknet_LIBRARIES dark)
+else()
+  message("DARKNET_PATH not set, searching for darknet in the system")
+  find_package(Darknet REQUIRED)
+endif()
 
 ## ----- Messages ----- ##
 
@@ -27,18 +36,36 @@ generate_messages(
 )
 
 
-
 ###################################
 ## catkin specific configuration ##
 ###################################
 
-catkin_package()
+catkin_package(
+  INCLUDE_DIRS include
+)
 
 ###########
 ## Build ##
 ###########
 
-# This is a pure python node (so far), no build to do
+## Specify additional locations of header files
+## Your package locations should be listed before other locations
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
+)
+
+add_executable(detection
+  src/detection_node.cpp
+  src/detector.cpp
+)
+
+target_link_libraries(detection
+  ${catkin_LIBRARIES}
+  ${Darknet_LIBRARIES}
+)
+
+add_dependencies(detection ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 #############
 ## Testing ##

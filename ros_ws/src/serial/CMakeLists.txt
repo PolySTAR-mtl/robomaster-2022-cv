@@ -53,6 +53,8 @@ target_link_libraries(serial_interface
   ${catkin_LIBRARIES}
 )
 
+add_dependencies(serial_interface ${${PROJECT_NAME}_EXPORTED_TARGETS})
+
 #############
 ## Testing ##
 #############
