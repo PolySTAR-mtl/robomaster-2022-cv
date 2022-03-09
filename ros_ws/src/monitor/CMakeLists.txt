@@ -7,7 +7,12 @@ add_compile_options(-std=c++17)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
+  sensor_msgs
+  detection
+  cv_bridge
 )
+
+find_package(OpenCV)
 
 
 ###################################
@@ -16,6 +21,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(
   INCLUDE_DIRS include
+  CATKIN_DEPENDS detection
 )
 
 ###########
@@ -27,13 +33,24 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
-add_executable(video_monitor
+add_executable(monitor_video
+  src/monitor_video_node.cpp
   src/video_monitor.cpp
 )
 
-target_link_libraries(video_monitor
+target_link_libraries(monitor_video
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
+)
+
+add_executable(monitor_logger
+  src/monitor_logger.cpp
+)
+
+target_link_libraries(monitor_logger
   ${catkin_LIBRARIES}
 )
 
@@ -49,4 +66,3 @@ target_link_libraries(video_monitor
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-
