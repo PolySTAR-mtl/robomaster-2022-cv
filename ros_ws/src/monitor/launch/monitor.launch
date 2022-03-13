@@ -1,9 +1,0 @@
-<launch>
-    <!-- Args -->
-
-    <!-- Nodes -->
-    <node name="monitor" pkg="monitor" type="video_monitor" output="screen">
-    </node>
-
-</launch>
-

@@ -1,17 +1,16 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(tracking)
 
-add_compile_options(-std=c++17)
-
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
   rospy
   std_msgs
   sensor_msgs
   message_generation
   detection
 )
+
+catkin_python_setup()
 
 ## ----- Messages ----- ##
 
@@ -27,12 +26,13 @@ generate_messages(
   std_msgs
 )
 
-
-
 ###################################
 ## catkin specific configuration ##
 ###################################
 
+catkin_package(
+  CATKIN_DEPENDS detection
+)
 
 ###########
 ## Build ##

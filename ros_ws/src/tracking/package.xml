@@ -14,8 +14,8 @@
 
   <exec_depend>rospy</exec_depend>
   <exec_depend>message_runtime</exec_depend>
-  <build_depend>detection</build_depend>
   <exec_depend>detection</exec_depend>
   
+  <export></export>
 
 </package>

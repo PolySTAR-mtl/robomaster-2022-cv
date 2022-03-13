@@ -2,7 +2,7 @@
 <package format="2">
   <name>serial</name>
   <version>0.1.0</version>
-  <description>Serial nterface to the Control and Systems team board A</description>
+  <description>Serial interface to the Control and Systems team board A</description>
 
   <maintainer email="sebastien.darche@polymtl.ca">Sébastien Darche</maintainer>
 
