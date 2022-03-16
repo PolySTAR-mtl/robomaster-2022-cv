@@ -39,7 +39,8 @@ A git submodule is basically just a pointer to a specific commit from another re
 
 ## Setting up darknet environment
 
-You need to `make` the darknet repository on your system to use it.
+First, you need to install OpenCV (if it's not on the system already). You can check here: https://vitux.com/opencv_ubuntu/ to build it from source (more realiable!).
+Then, you need to `make` the darknet repository on your system to use it.
 You should only set the flags `GPU`, `CUDNN` and `OPENCV` to `1` depending if you actually use them. See https://pjreddie.com/darknet/install/ for more information.
 You also need to change the `ARCH=` flag in order to set the configuration used of your system (for Jetson Xavier: `ARCH= -gencode arch=compute_72,code=[sm_72,compute_72]`)
 
