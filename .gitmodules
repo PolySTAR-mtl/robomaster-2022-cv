@@ -1,3 +1,6 @@
 [submodule "detection/darknet"]
 	path = detection/darknet
 	url = git@github.com:AlexeyAB/darknet.git
+[submodule "ros_ws/src/jetson_camera"]
+	path = ros_ws/src/jetson_camera
+	url = git@github.com:sfalexrog/jetson_camera.git
