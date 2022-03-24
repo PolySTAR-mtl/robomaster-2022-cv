@@ -1,8 +1,7 @@
 # Detections.msg
 ## List of detected bounding boxes
 
-Header header
+# Header header
 Detection[] detections
 
-# frame
 uint8 frame

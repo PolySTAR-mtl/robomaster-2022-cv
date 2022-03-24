@@ -290,7 +290,7 @@ class MultiObjectTracker:
         Returns the active tracks after active filtering applied """
 
         # filter out empty detections
-        detections = [det for det in detections if det.box is not None]
+        # detections = [det for det in detections if det.box is not None]
 
         logger.debug('step with %d detections' % len(detections))
         matches = self.matching_fn(self.trackers, detections)
@@ -301,9 +301,11 @@ class MultiObjectTracker:
             t.predict()
 
         # assigned trackers: correct
+        det_indices = []
         for match in matches:
             track_idx, det_idx = match[0], match[1]
             self.trackers[track_idx].update(detection=detections[det_idx])
+            det_indices.append(det_idx)
         """
         # not assigned detections: create new trackers POF
         assigned_det_idxs = set(matches[:, 1]) if len(matches) > 0 else []
@@ -321,4 +323,4 @@ class MultiObjectTracker:
         # cleanup dead trackers
         self.cleanup_trackers()
         """
-        return self.active_tracks(**self.active_tracks_kwargs)
+        return self.active_tracks(**self.active_tracks_kwargs), det_indices

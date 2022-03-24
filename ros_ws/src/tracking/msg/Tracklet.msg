@@ -8,8 +8,13 @@
 # uint8 armor_module
 # ...
 
-# Bounding box [xmin, ymin, xmax, ymax]
-float32[] box
+# Bounding box
+float32 x
+float32 y
+float32 w
+float32 h
 
 # class
 uint8 cls
+
+float32 confidence

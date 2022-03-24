@@ -7,9 +7,11 @@
 
 import os
 import cv2
+from urllib.request import urlretrieve
 import numpy as np
 from motpy.tracker import Tracker
 from detection.msg import Detections, Detection as DetectionROS
+import rospy
 
 PROJECT_FOLDER = os.path.dirname(os.path.realpath(__file__))
 DATASET_FOLDER = os.path.join(PROJECT_FOLDER, 'TP3_data')
@@ -24,10 +26,10 @@ CONFIG_PATH = os.path.join(YOLO_FOLDER, 'yolov4.cfg')
 if not os.path.exists(YOLO_FOLDER):
     os.mkdir(YOLO_FOLDER)
 if not os.path.isfile(WEIGHTS_PATH):
-    logger.debug('downloading weights to' + WEIGHTS_PATH)
+    print('downloading weights to' + WEIGHTS_PATH)
     urlretrieve(WEIGHTS_URL, WEIGHTS_PATH)
 if not os.path.isfile(CONFIG_PATH):
-    logger.debug('downloading config to' + CONFIG_PATH)
+    print('downloading config to' + CONFIG_PATH)
     urlretrieve(CONFIG_URL, CONFIG_PATH)
 net = cv2.dnn.readNetFromDarknet(CONFIG_PATH, WEIGHTS_PATH)
 
@@ -40,7 +42,7 @@ def init_detections():
     for line in lines:
         x, xmax, y, ymax = map(int, line.split()[2:6])
         detection = DetectionROS(x=x, y=y, w=xmax-x, h=ymax-y, confidence=1)
-        detections.append(Detection(box=box,))
+        detections.append(detection)
     return Detections(detections=detections, frame=1)
 
 def yolo_detections(frame, img, threshold=0.3):
@@ -52,7 +54,7 @@ def yolo_detections(frame, img, threshold=0.3):
     blob = cv2.dnn.blobFromImage(img, 1/255.0, (416, 416), swapRB=True, crop=False)
     net.setInput(blob)
     ln = net.getLayerNames()
-    ln = [ln[i[0] - 1] for i in net.getUnconnectedOutLayers()]
+    ln = [ln[i - 1] for i in net.getUnconnectedOutLayers()]
     layer_outputs = net.forward(ln)
 
     detections = []
@@ -74,7 +76,7 @@ def main():
     init = init_detections()
     pub = rospy.Publisher('detections', Detections, queue_size=1)
     rospy.init_node('detection_test', anonymous=False)
-    r = rospy.Rate(24)
+    r = rospy.Rate(1)
     nbframe = len(os.listdir(VIDEO_FOLDER))
     imgs = (cv2.imread(os.path.join(VIDEO_FOLDER, f'frame{frame}.jpg')) 
                 for frame in range(1, nbframe+1))
@@ -90,7 +92,7 @@ def main():
                 detections = yolo_detections(frame, img)
             except StopIteration:
                 break
-        rospy.spin()
+        rospy.loginfo(detections)
         pub.publish(detections)
         r.sleep()
 
