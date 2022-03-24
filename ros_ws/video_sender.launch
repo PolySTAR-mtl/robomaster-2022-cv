@@ -1,0 +1,13 @@
+<launch>
+    <arg name="file" default="$(dirname)/data/img/video-local.avi"/>
+
+    <remap from="/video_file/image_raw" to="/detection/image_in"/>
+
+    <include file="$(find video_stream_opencv)/launch/camera.launch" >
+        <arg name="camera_name" value="video_file" />
+        <arg name="video_stream_provider" value="$(arg file)" />
+        <arg name="set_camera_fps" value="30"/>
+        <arg name="loop_videofile" value="true"/>
+    </include>
+</launch>
+
