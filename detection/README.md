@@ -54,6 +54,7 @@ A git submodule is basically just a pointer to a specific commit from another re
   * [Darknet](#darknet) 
   * [Deployment on Jetson](#deployment-on-jetson)
   * [Inference Results](#inference-results)
+* [Benchmark](#benchmark)
 * [Where to go from here](#where-to-go-from-here)
 
 ## Setting up darknet environment
@@ -234,6 +235,24 @@ cudadec-memtype=0
 Here the results (Top is DeepStream optimized inference, Bottom is base Darknet Inference):
 ![image](https://user-images.githubusercontent.com/31957192/160440797-e2077011-10d1-4ed3-9aba-0dc321895935.png)
 ![image](https://user-images.githubusercontent.com/31957192/160440818-4c59f1b0-002f-4ef8-8c1d-130d187074f7.png)
+
+We can see we managed to improve drastically the performance, going from ~10 FPS to over 30 FPS!
+
+## Benchmark
+
+Here adding a benchmark to compare to future model (add as new model are tried):
+
+**Jetson Xavier NX**
+
+*Yolov3 (2021-2022 Polystar version)*
+
+|                       | Darknet | DeepStream <br> (Darknet weights) <br> 32FP | DeepStream <br> (Darknet weights) <br> 16FP |
+|:---------------------:|:----------:|:-------:|:-------:|
+| FPS  | 8.5      | 15   | 36   |
+
+(TODO: ADD mAP and recalculate on 32FP to be sure)
+
+
 
 ## Where to go from here?
 
