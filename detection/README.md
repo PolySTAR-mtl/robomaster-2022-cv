@@ -2,6 +2,7 @@
 
 . <br>
 ├── README.md <br>
+├── DeepStream-Yolo # External lib, you should follow the procedure mentioned in the README and run inference from here
 ├── darknet # External lib, You should just modify the Makefile as you need it before building <br>
 ├── data # where the data for training/testing should be ! <br>
 │   ├── backup/ <br>
