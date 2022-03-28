@@ -69,6 +69,16 @@ You also need to change the `ARCH=` flag in order to set the configuration used 
 
 The pre-processing consists of two steps: 1) using `image_zooming.py` in order to generate 'zoomed' versions of the dji_roco dataset to simulate what a robot would see (in practice, we parse each xml file and cut out part of the image based on available bounding box), 2) process the images to generate the labels that YOLO expects with `label_processing.py`. First, you should download the cleaned dataset from the drive (RoboMaster -> Equipe-Computer vision -> dataset -> dji_roco_clean -> raw) and extract everything in the dataset directory. Be careful, it should keep for each `robomaster_XXXX.zip` the same structure as the dataset directory that is shown above (minus the `labels/` and `XXX.txt` that are generated after executing `label_processing.py`). You can then execute the script mentioned above in the correct order. You should end up with the structure of the `dataset` directory you can see in the tree above. You also have files examples you would obtain. The notation we used is that for instance `AllianceVsArtisans_BO2_2_1` is the original image/xml file from dji_roco, and any generated data from `image_zooming.py` will be named `AllianceVsArtisans_BO2_2_1_X` where X is an integer.
 
+Here, an example of images obtained after using `image_zooming.py`. All images are included in the train data. The big image is the original data we have from DJI. We crop the image around the robots using their bounding box to get 'zoomed' version which simulate what the robot could see in deployment settings.
+
+![AllianceVsArtisans_BO2_2_1](https://user-images.githubusercontent.com/31957192/160457671-9fa5f0c2-7fbb-4f44-a2bf-e466756f9432.jpg)
+![AllianceVsArtisans_BO2_2_1_0](https://user-images.githubusercontent.com/31957192/160457672-a8250c62-75ee-46ea-821b-d38c37344e7a.jpg)
+![AllianceVsArtisans_BO2_2_1_1](https://user-images.githubusercontent.com/31957192/160457802-96a9695e-6a73-4407-9076-2864fdadef9c.jpg)
+![AllianceVsArtisans_BO2_2_1_5](https://user-images.githubusercontent.com/31957192/160457731-b6248a2e-029d-48ab-8ba6-0af3bf6748c3.jpg)
+![AllianceVsArtisans_BO2_2_1_2](https://user-images.githubusercontent.com/31957192/160457739-8e9c015e-960d-46d9-9c7f-11d215f39963.jpg)
+![AllianceVsArtisans_BO2_2_1_3](https://user-images.githubusercontent.com/31957192/160457740-6c30bddb-6a91-41b9-9915-4516c805ea12.jpg)
+![AllianceVsArtisans_BO2_2_1_4](https://user-images.githubusercontent.com/31957192/160457742-9655e406-c433-4d94-91f7-3fe83cc02960.jpg)
+
 ### A note on the labels
 
 Currently, we only consider the following class: `classes = ["red_armor", "blue_armor", "grey_armor", "base", "watcher", "car"]` (see `label_processing.py`), where "car" means robot for dji. If you want to include more classes, just add them in this list. However, any string you add in this list should be in the .xml file provided by dji (in `image_annotation/`). Here, we don't distinguish in between robots type (standard, hero, engineer...). If you want to include them, you should use the armor number and thus modify the scripts.
@@ -127,11 +137,18 @@ Command example (to execute at the root of `detection/`):
 
 `./darknet/darknet detector test data/dji.data data/yolov3_custom.cfg data/backup/yolov3_custom_best.weights data/WMJVsWolfTooth_BO2_2_368.jpg`
 
+which could yield something similar to:
+
+![predictions](https://user-images.githubusercontent.com/31957192/160458374-5e2c4bc6-3b60-4a37-99e0-2b90fb732eed.jpg)
+
 This run the model to infer on a given image in the `data/` directory.
 
 `./darknet/darknet detector demo data/dji.data data/yolov3_custom.cfg data/backup/yolov3_custom_best.weights example/vid_test.mp4 -out_filename exemple/vid_test.avi`
 
-This allows to generate the prediction over the video in `exemple/` (some clip from DJI video found on their Twitch channel). Can be a good first trial to evaluate your model on 'real' data.
+This allows to generate the prediction over the video in `exemple/` (some clip from DJI video found on their Twitch channel). Can be a good first trial to evaluate your model on 'real' data!
+
+
+![vid_test_pred_gif](https://user-images.githubusercontent.com/31957192/160458417-14272412-5472-4f37-9889-e7c02a704159.gif)
 
 Check  https://github.com/AlexeyAB/darknet#how-to-use-on-the-command-line and https://github.com/AlexeyAB/darknet for more information!
 
