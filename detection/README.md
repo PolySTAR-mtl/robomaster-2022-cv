@@ -38,6 +38,24 @@ A git submodule is basically just a pointer to a specific commit from another re
 
 # How to use
 
+## Summary
+
+* [Setting up darknet environment](#setting-up-darknet-environment)
+* [Preparing for training the model](#preparing-for-training-the-model)
+  * [Pre-processing](#pre-processing)
+  * [A note on the labels](#a-note-on-the-labels)
+  * [Configuration files](#configuration-files)
+  * [How to generate train and test txt files](#how-to-generate-train-and-test-txt-files)
+  * [Moving images to data](#moving-images-to-data)
+  * [Downloading pre-trained weights](#downloading-pre-trained-weights)
+  * [Running train](#running-train)
+  * [Train Results](#train-results)
+* [Inference](#inference)
+  * [Darknet](#darknet) 
+  * [Deployment on Jetson](#deployment-on-jetson)
+  * [Inference Results](#inference-results)
+* [Where to go from here](#where-to-go-from-here)
+
 ## Setting up darknet environment
 
 First, you need to install OpenCV (if it's not on the system already). You can check here: https://vitux.com/opencv_ubuntu/ to build it from source (more realiable!).
@@ -49,7 +67,7 @@ You also need to change the `ARCH=` flag in order to set the configuration used 
 
 ### Pre-processing
 
-The pre-processing consists of two steps: 1) using `image_zooming.py` in order to generate 'zoomed' versions of the dji_roco dataset to simulate what a robot would see (in practice, we parse each xml file and cut out part of the image based on available bounding box), 2) process the images to generate the labels that YOLO expects with `label_processing.py`. First, you should download the cleaned dataset from the drive (RoboMaster -> Equipe-Computer vision -> dataset -> dji_roco_clean -> raw) and extract everything in the dataset directory. Be careful, it should keep for each `robomaster_XXXX.zip` the same structure as the dataset directory that is shown above (minus the `labels/` and `XXX.txt` that are generated after executing `label_processing.py`). You can then execute the script mentioned above in the correct order. You should end up with the structure of the `dataset` directory you can see in the tree above. You also have files examples you would obtain. The notation we used is that for instance `AllianceVsArtisans_BO2_2_1` is the original image/xml file from dji_roco, and any generated data from `image_zooming.py` will be named `AllianceVsArtisans_BO2_2_1_X` where X is an integer. (TODO SEE IF WE HAVE ENOUGH GDRIVE SPACE TO PUT A PROCESSED VERSION OF DATASET).
+The pre-processing consists of two steps: 1) using `image_zooming.py` in order to generate 'zoomed' versions of the dji_roco dataset to simulate what a robot would see (in practice, we parse each xml file and cut out part of the image based on available bounding box), 2) process the images to generate the labels that YOLO expects with `label_processing.py`. First, you should download the cleaned dataset from the drive (RoboMaster -> Equipe-Computer vision -> dataset -> dji_roco_clean -> raw) and extract everything in the dataset directory. Be careful, it should keep for each `robomaster_XXXX.zip` the same structure as the dataset directory that is shown above (minus the `labels/` and `XXX.txt` that are generated after executing `label_processing.py`). You can then execute the script mentioned above in the correct order. You should end up with the structure of the `dataset` directory you can see in the tree above. You also have files examples you would obtain. The notation we used is that for instance `AllianceVsArtisans_BO2_2_1` is the original image/xml file from dji_roco, and any generated data from `image_zooming.py` will be named `AllianceVsArtisans_BO2_2_1_X` where X is an integer.
 
 ### A note on the labels
 
@@ -59,13 +77,12 @@ Currently, we only consider the following class: `classes = ["red_armor", "blue_
 
 In `data/`, you currently have two configuration files for the data (`dji.names` and `dji.data`), one for the model `yolov3_custom.cfg`. `dji.names` describes your class (so change it if you change the classes!), `dji.data` contains the path to important files for YOLO, such as your train/test files list. The `train_data.txt` and `test_data.txt`  contains the list of the images used in the training and testing. The `backup` directory is where the weights of the model are saved during training.
 
-### How to generate `train_data.txt` and `test_data.txt`
+### How to generate train and test txt files
 
-(TODO: CHANGE THE PATH IN `label_processing.py`)
 A simple way is to pull together the "XXXX.txt" files of each dataset (for instancem `robomaster_Central China Regional Competition.txt`), obtain after using `label_processing.py`.
 This will give you a global list of files `glob.txt`. You can then shuffle this file (for instance, using cmd such as `cat glob.txt | shuf > glob_shuf.txt`) and then generate train/test list by taking a ~0.8/0.2 ratio (for instancem using `head -n X glob_shuf.txt > train_data.txt` where X is an integer of 80% of the number of lines of `glob_shuf.txt`).
 
-### Moving images to `data/`
+### Moving images to data
 
 You can then copy all processed data in `image/` and `labels/` from each dataset from `dataset/` at the root of `data/` (so, no sub directory such as `robomaster_Central China Regional Competition/`).
 
@@ -90,7 +107,13 @@ If you want more information on how to parametrize the ".cfg" file of the model 
 
 WARNING: The training will take several hours, even on GPU. Make sure you have a computer that can do so! Even on the Jetson, it will be slow!
 
-## Testing
+### Train Results
+
+Here the kind of chart you should obtain in the end, blue being the loss function score (ideally, we want to have it like this around 1) and in red the mAP score.
+![chart_yolov3_custom](https://user-images.githubusercontent.com/31957192/160454134-82696932-78b6-48c8-a920-05326fbb5bfe.png)
+
+
+## Inference
 
 ### Darknet
 
@@ -120,7 +143,12 @@ We will actually use a wrapper of this SDK which allow to automatically parse an
 
 Follow requirements to install dependencies. In the case of simple Yolov3, everything should be installed on the Jetson already (but, if needed, here the getting started for Jetson NX: https://developer.nvidia.com/embedded/learn/get-started-jetson-xavier-nx-devkit to install *JetPack 4.6.1* and https://developer.nvidia.com/deepstream-sdk to install *DeepStream SDK* and use the repository link to `git clone https://github.com/marcoslucianops/DeepStream-Yolo`). 
 
-You might need to add to the path the cuda library: (TO DO: ADD THE END OF THE `.bashrc` FILE)
+You might need to add to the path the cuda library. To do that, add at the end of the `~/.bashrc` the following lines and restart the terminal:
+
+```
+export PATH="/usr/local/cuda-10.2/bin:$PATH"
+export LD_LIBRARY_PATH="/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH"
+```
 
 Once installed, just follow the DeepStream-Yolo repostiory instructions: https://github.com/marcoslucianops/DeepStream-Yolo#basic-usage
 
@@ -185,9 +213,18 @@ cudadec-memtype=0
 ...
 ```
 
+### Inference Results
 Here the results (Top is DeepStream optimized inference, Bottom is base Darknet Inference):
 ![image](https://user-images.githubusercontent.com/31957192/160440797-e2077011-10d1-4ed3-9aba-0dc321895935.png)
 ![image](https://user-images.githubusercontent.com/31957192/160440818-4c59f1b0-002f-4ef8-8c1d-130d187074f7.png)
 
+## Where to go from here?
+
+Here I will list down what could be improved from what we did in the detection:
+
+* Improvement over Yolov3: We used Yolov3 as it was a simple and straight forward model with relative good performance (mAP and FPS), but feel free to explore more recent model (Yolov5...). Keep in mind you will have a trade-off to decide between mAP/FPS (especially with the Jetson)
+* Improvement over the class used: We considered so far only 6 classes, that is the 3 types of target (any robot, base and sentry), as well as the armor colours (red, blue and gray). We only used the armor colours to track our target without paying attention to the type of robots, but it could be taken into account for the decision/tracking. You could also expand on the data processing we have made and include as classes the type of robots based on the armor number (ex: '1' is engineer, '2' is hero....)
+* Improvement over data processing: Since we didn't have access to any kind of data matching what the camera of the robot would see, we simulated them by 'zooming' on those image (see `data_processing/image_zooming.py`). You could add more level of zoom to have more 'fine-grained' predictions. (TO DO: ADD A PART ABOUT LIGHTHING CONDITION, ROTATED IMAGE...)
+* Wrapping the library: Currently, we use two different external library. It could be good to wrap everything in one package. It could also allow you to customize some function in order to adapt to your need or fit better with ROS.
 
 
