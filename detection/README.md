@@ -87,11 +87,17 @@ You can then use the command, when you are at the root of `detection/`:
 See: https://github.com/AlexeyAB/darknet#how-to-use-on-the-command-line if you want to see how the command line of darknet works
 If you want more information on how to parametrize the ".cfg" file of the model or how everything works, check https://github.com/AlexeyAB/darknet/wiki => the colab at the beginning talking about Detection/Traning!
 
-WARNING: The training will take several hours, even on GPU. Make sure you have a computer that can do so or use the Jetson.
+WARNING: The training will take several hours, even on GPU. Make sure you have a computer that can do so! Even on the Jetson, it will be slow!
 
 ## Testing
 
-If you want to just test the model based on the configuration that alreaady exists, you can download the weights avaiable on the drive (RoboMaster -> Equipe-Computer vision -> weights -> yolov3_custom_best.weights). On the same path you also have the .cfg file used (same as the one presented in the tree).
+### Darknet
+
+You can first try to check the results using darknet framework. Be careful though, the FPS (Frame Per Seconds, that is, how many detections are done in a second) you will get won't reflect the FPS you will get on the Jetson (it is just for testing). 
+
+Benchmark we did show between 7-10 FPS using this (which is far from ideal, since we would like around 20 FPS minimum, 30 FPS being real time).
+
+To test the model based on the configuration that already exists, you can download the weights avaiable on the drive (RoboMaster -> Equipe-Computer vision -> weights -> yolov3_custom_best.weights). On the same path you also have the .cfg file used (same as the one presented in the tree).
 
 Command example (to execute at the root of `detection/`):
 
@@ -104,6 +110,83 @@ This run the model to infer on a given image in the `data/` directory.
 This allows to generate the prediction over the video in `exemple/` (some clip from DJI video found on their Twitch channel). Can be a good first trial to evaluate your model on 'real' data.
 
 Check  https://github.com/AlexeyAB/darknet#how-to-use-on-the-command-line and https://github.com/AlexeyAB/darknet for more information!
+
+## Deployment on Jetson
+
+As mentioned in the previous section, we need to optimize the network to yield good performance on the Jetson. To do so, we will use DeepStream which is a Software Development Kit (SDK) developped by NVIDIA to run AI app on Jetson with better performance (since it is optimized for it!). See for more information: https://developer.nvidia.com/deepstream-sdk
+
+We will actually use a wrapper of this SDK which allow to automatically parse and optimize Darknet network. The repository is: https://github.com/marcoslucianops/DeepStream-Yolo
+
+Follow requirements to install dependencies. In the case of simple Yolov3, everything should be installed on the Jetson already (but, if needed, here the getting started for Jetson NX: https://developer.nvidia.com/embedded/learn/get-started-jetson-xavier-nx-devkit to install *JetPack 4.6.1* and https://developer.nvidia.com/deepstream-sdk to install *DeepStream SDK* and use the repository link to `git clone https://github.com/marcoslucianops/DeepStream-Yolo`). 
+
+You might need to add to the path the cuda library: (TO DO: ADD THE END OF THE `.bashrc` FILE)
+
+Once installed, just follow the DeepStream-Yolo repostiory instructions: https://github.com/marcoslucianops/DeepStream-Yolo#basic-usage
+
+To test the installation, just put the *.weights* and *.cfg* previously trained in the DeepStream-Yolo repository. Modify the `labels.txt` file in the repostiory by putting the labels (corresponds to the `dji.names` file in darknet training). Then, modify the `config_infer_primary.txt` file as follow:
+
+```
+[property]
+...
+# 0=RGB, 1=BGR, 2=GRAYSCALE
+model-color-format=0
+
+# YOLO cfg, insert the name of the .cfg
+custom-network-config=yolov3_custom.cfg
+
+# YOLO weights, same but for .weights
+model-file=yolov3_custom_best.weights
+
+# Generated TensorRT model (will be created if it doesn't exist)
+# This is the new optimized network DeepStream will create/use
+# *b1* corresponds to batch size (since we are in inference mode, leave to 1)
+# *gpu0* which gpu to use, we only have one on Jetson so leave as it is
+# *fp16* what precision to use for the variable. It has to be consistent with *network-mode* below
+# FP16 means precision is reduced to Float 16 bits instead of Float 32 bits. 
+# It will slightly lower accuracy but drastically improve performance!
+model-engine-file=model_b1_gpu0_fp16.engine
+
+# Model labels file (dji.names of darknet), either update *labels.txt* or put *dji.names* in the repository and modify this line
+labelfile-path=labels.txt
+
+# Batch size
+batch-size=1
+
+# 0=FP32, 1=INT8, 2=FP16 mode
+# The precision we talked earlier
+network-mode=2
+
+# Number of classes in label file
+num-detected-classes=6
+...
+[class-attrs-all]
+# You can modify IOU and Confidence threshold here
+# But we can leave default
+# IOU threshold
+nms-iou-threshold=0.6
+# Socre threshold
+pre-cluster-threshold=0.25
+```
+
+Once it is done, you can test on the *vid_test.mp4* from the example file, either by putting it at the root of DeepStream-Yolo or by changing the file path. You just need to change one thing in the *deepstream_app_config.txt* file:
+
+
+```
+...
+[source0]
+enable=1
+type=3
+# Here change the source. Don't forget to put the '/'!
+uri=file:/vid_test.mp4 # or put the location of the video, without forgetting '/'
+num-sources=1
+gpu-id=0
+cudadec-memtype=0
+...
+```
+
+Here the results (Top is DeepStream optimized inference, Bottom is base Darknet Inference):
+![image](https://user-images.githubusercontent.com/31957192/160440797-e2077011-10d1-4ed3-9aba-0dc321895935.png)
+![image](https://user-images.githubusercontent.com/31957192/160440818-4c59f1b0-002f-4ef8-8c1d-130d187074f7.png)
 
 
 
