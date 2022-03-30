@@ -10,6 +10,7 @@
 
 #include <fstream>
 #include <vector>
+#include <chrono>
 
 // Darknet
 
@@ -141,9 +142,13 @@ void Detector::imageCallback(const sensor_msgs::ImagePtr& img) {
 
     image sized = resize_image(im, p->net.w, p->net.h);
 
+    auto t0 = std::chrono::steady_clock::now();
     // Run inference
     network_predict(p->net, sized.data);
+    auto t1 = std::chrono::steady_clock::now();
 
+
+    std::cout << std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0).count() << '\n';
     // Fetch boxes
     int nboxes = 0;
     detection_darknet* dets = get_network_boxes(

@@ -13,12 +13,21 @@ find_package(catkin REQUIRED COMPONENTS
   cv_bridge
 )
 
-if(DARKNET_PATH)
+
+find_package(OpenCV)
+
+if(DARKNET_CMAKE_PATH)
+  set(CMAKE_CUDA_ARCHITECTURES 72)
   add_subdirectory(${CMAKE_SOURCE_DIR}/../${DARKNET_PATH} ${CMAKE_CURRENT_BINARY_DIR}/darknet)
   set(Darknet_LIBRARIES dark)
 else()
-  message("DARKNET_PATH not set, searching for darknet in the system")
-  find_package(Darknet REQUIRED)
+  if(DARKNET_PATH)
+    set(Darknet_LIBRARIES ${DARKNET_PATH}/libdarknet.so)
+    set(Darknet_INCLUDE_DIRS ${DARKNET_PATH}/include ${DARKNET_PATH}/src)
+  else()
+    message("DARKNET_PATH not set, searching for darknet in the system")
+    find_package(Darknet REQUIRED)
+  endif()
 endif()
 
 ## ----- Messages ----- ##
@@ -53,6 +62,7 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${Darknet_INCLUDE_DIRS}
 )
 
 add_executable(detection
@@ -63,6 +73,7 @@ add_executable(detection
 target_link_libraries(detection
   ${catkin_LIBRARIES}
   ${Darknet_LIBRARIES}
+  ${OpenCV_LIBRARIES}
 )
 
 add_dependencies(detection ${${PROJECT_NAME}_EXPORTED_TARGETS})
