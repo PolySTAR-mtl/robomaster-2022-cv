@@ -17,15 +17,15 @@ competition, organized by DJI.
 
 ### ROS
 
-- ROS noetic
-  - **TODO** List of ROS packages
+- ROS melodic / noetic
+  - `ros-melodic-cv-bridge`
 - OpenCV & Python bindings
 
 ### Detection
 
 This project relies on the `darknet` library, which is included as a submodule. It is required
 to build the ROS workspace. You can either install the library (`make install`) in a common
-place, or specify the path of the CMakeLists.txt file when building :
+place, or specify the path of the library when building (don't forget to build it beforehand!) :
 
 ```bash
 catkin_make -DDARKNET_PATH=../detection/darknet
