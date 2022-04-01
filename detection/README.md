@@ -14,15 +14,18 @@
 │   └── yolov3_custom.cfg <br>
 ├── data_processing # Contains file to process data <br>
 │   └── label_processing.py <br>
-└── dataset # Directory to put the datasets <br> 
+├── dataset # Directory to put the datasets <br> 
 │   └── robomaster_Central China Regional Competition <br>
 │&nbsp;&nbsp;&nbsp;&nbsp;   ├── image/ <br>
 │&nbsp;&nbsp;&nbsp;&nbsp;   ├── image_annotation/ <br>
 │&nbsp;&nbsp;&nbsp;&nbsp;   ├── labels/ <br>
 │&nbsp;&nbsp;&nbsp;&nbsp;   ├── robomaster_Central China Regional Competition.txt <br>
-└── exemple # Some example of prediction over a video <br>
-&nbsp;&nbsp;&nbsp;&nbsp;├── vid_test.mp4 <br>
-&nbsp;&nbsp;&nbsp;&nbsp;└── vid_test_pred.avi <br>
+├── exemple # Some example of prediction over a video <br>
+│&nbsp;&nbsp;&nbsp;&nbsp;├── vid_test.mp4 <br>
+│&nbsp;&nbsp;&nbsp;&nbsp;└── vid_test_pred.avi <br>
+└── patch # directory with files to patch camera issue <br>
+&nbsp;&nbsp;&nbsp;&nbsp;├── Makefile <br>
+&nbsp;&nbsp;&nbsp;&nbsp;└── deepstream_source_bin.c <br>
 
 # Small note on submodules
 
