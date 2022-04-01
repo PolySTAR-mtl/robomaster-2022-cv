@@ -215,10 +215,17 @@ nms-iou-threshold=0.6
 pre-cluster-threshold=0.25
 ```
 
-Once it is done, you can test on the *vid_test.mp4* from the example file, either by putting it at the root of DeepStream-Yolo or by changing the file path. You just need to change one thing in the *deepstream_app_config.txt* file:
+Once it is done, you can test on the *vid_test.mp4* from the example file, either by putting it at the root of DeepStream-Yolo or by changing the file path. You just need to change a few things in the *deepstream_app_config.txt* file:
 
 
 ```
+[tiled-display]
+...
+# Just control the display, no need to change it
+# But you can probably set the same value as in [streammux] below
+# for debugging purposes
+width=1280
+height=720
 ...
 [source0]
 enable=1
@@ -229,7 +236,46 @@ num-sources=1
 gpu-id=0
 cudadec-memtype=0
 ...
+[streammux]
+...
+width=416 #Put YOLO input width/height
+height=416
+...
 ```
+
+As explained in DeepStream-Yolo doc, you can then run `deepstream-app -c deepstream_app_config.txt`
+
+After testing it works on a video, it is time to connect the Raspberry-Pi camera. Make sure to connect it to the CAM0 slot BEFORE turning on the Jetson. You can verify it is recognized by the Jetson by checking that `ls /dev/video0` returns something. Then, get the camera parameters by running `v4l2-ctl -d /dev/video0 --list-formats-ext` and write down the output couple size/fps desired (for instance: 1920x1080 (30 FPS)). The library `v4l` should be install on the Jetson, if not run `sudo apt-get install v4l-utils`. You can now change the *deepstream_app_config.txt* to take into account the camera:
+
+```
+...
+[source0]
+enable=1
+type=5 # CSI camera type
+# Modify height, width and fps based on what you wrote down earlier
+camera-width=1920 
+camera-height=1080
+camera-fps-n=30
+# number of inference return, leave to 1
+camera-fps-d=1
+# which camera slot
+camera-v4l2-dev-node=0
+num-sources=1
+gpu-id=0
+cudadec-memtype=0
+...
+[streammux]
+...
+# Set livesource to 1 instead of 0
+livesource=1
+width=416 #Put YOLO input width/height
+height=416
+```
+
+You can then run the same command as with the video. If the video stream is flipped, it means NVIDIA still hasn't fixed an issue dating back from 2019. To patch it, you will need to take the files *deepstream_source_bin.c* and *Makefile* from the `patch/` directory and paste the first one in `/opt/nvidia/deepstream/deepstream-6.0/sources/apps-common/src/` and the second one in `opt/nvidia/deepstream/deepstream-6.0/sources/sample_apps/deepstream-app/`. For reference, the files were modified following this fix: https://forums.developer.nvidia.com/t/jetson-nano-csi-raspberry-pi-camera-v2-upside-down-video-when-run-an-example-with-deepstream-app/82077/7?u=utilisateur1813. Then you just need to `sudo CUDA_VER=10.2 make` from inside `opt/nvidia/deepstream/deepstream-6.0/sources/sample_apps/deepstream-app/` to compile the changes and then `sudo CUDA_VER=10.2 make install` to put the bin correctly. With this, the video stream should be normal again.
+
+// TODO: Add the way to get inference!
+
 
 ### Inference Results
 Here the results (Top is DeepStream optimized inference, Bottom is base Darknet Inference):
