@@ -573,6 +573,11 @@ gie_processing_done_buf_prob (GstPad * pad, GstPadProbeInfo * info,
   return GST_PAD_PROBE_OK;
 }
 
+/** \brief Declare the callback for our C++ interface, not
+ * bothering with type
+ */
+void deepstreamCallback(void*, void*);
+
 /**
  * Buffer probe function after tracker.
  */
@@ -588,6 +593,8 @@ analytics_done_buf_prob (GstPad * pad, GstPadProbeInfo * info, gpointer u_data)
     NVGSTDS_WARN_MSG_V ("Batch meta not found for buffer %p", buf);
     return GST_PAD_PROBE_OK;
   }
+
+  deepstreamCallback(appCtx, batch_meta);
 
   /*
    * Output KITTI labels with tracking ID if configured to do so.

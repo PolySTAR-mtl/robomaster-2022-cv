@@ -40,6 +40,7 @@ if(DEEPSTREAM)
   pkg_check_modules(JSON_GLIB REQUIRED json-glib-1.0)
 
   find_package(CUDA REQUIRED)
+  find_package(X11 REQUIRED)
 
   
   set(Deepstream_PATH /opt/nvidia/deepstream/deepstream)
@@ -71,11 +72,12 @@ if(DEEPSTREAM)
     ${GST_VIDEO_LIBRARIES}
     ${GST_RTSP_LIBRARIES}
     ${JSON_GLIB_LIBRARIES}
+    ${X11_LIBRARIES}
     ${CUDA_LIBRARIES}
   ) # That's a lot
 
   set(Deepstream_INCLUDE_DIRS 
-    src/deepstream_app
+    src/deepstream-app
     ${Deepstream_PATH}/sources/apps/apps-common/includes
     ${Deepstream_PATH}/sources/includes
     ${GSTREAMER_INCLUDE_DIRS}
@@ -126,10 +128,20 @@ add_executable(detection
   src/detector.cpp
 )
 
+add_executable(deepstream_detection
+  src/deepstream_node.cpp
+  src/deepstream_detector.cpp
+)
+
 target_link_libraries(detection
   ${catkin_LIBRARIES}
   ${Darknet_LIBRARIES}
   ${OpenCV_LIBRARIES}
+)
+
+target_link_libraries(deepstream_detection
+  ${catkin_LIBRARIES}
+  deepstream-runner
 )
 
 add_dependencies(detection ${${PROJECT_NAME}_EXPORTED_TARGETS})

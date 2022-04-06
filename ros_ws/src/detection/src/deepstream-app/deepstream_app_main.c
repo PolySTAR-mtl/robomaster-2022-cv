@@ -610,7 +610,7 @@ recreate_pipeline_thread_func (gpointer arg)
 }
 
 int
-main (int argc, char *argv[])
+deepstream_app_main (int argc, char *argv[])
 {
   GOptionContext *ctx = NULL;
   GOptionGroup *group = NULL;

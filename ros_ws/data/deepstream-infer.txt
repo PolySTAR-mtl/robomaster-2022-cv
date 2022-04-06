@@ -17,7 +17,7 @@ cluster-mode=2
 maintain-aspect-ratio=0
 parse-bbox-func-name=NvDsInferParseYolo
 
-custom-lib-path=nvdsinfer_custom_impl_Yolo/libnvdsinfer_custom_impl_Yolo.so
+custom-lib-path=/home/polystar/robomaster-2022-cv/detection/DeepStream-Yolo/nvdsinfer_custom_impl_Yolo/libnvdsinfer_custom_impl_Yolo.so
 
 engine-create-func-name=NvDsInferYoloCudaEngineGet
 
@@ -25,10 +25,10 @@ engine-create-func-name=NvDsInferYoloCudaEngineGet
 model-color-format=0
 
 # YOLO cfg, insert the name of the .cfg
-custom-network-config=yolov3_custom.cfg
+custom-network-config=/home/polystar/robomaster-2022-cv/detection/data/yolov3_custom.cfg
 
 # YOLO weights, same but for .weights
-model-file=yolov3_custom_best.weights
+model-file=/home/polystar/robomaster-2022-cv/detection/data/yolov3_custom_best.weights
 
 # Generated TensorRT model (will be created if it doesn't exist)
 # This is the new optimized network DeepStream will create/use
@@ -40,7 +40,7 @@ model-file=yolov3_custom_best.weights
 model-engine-file=model_b1_gpu0_fp16.engine
 
 # Model labels file (dji.names of darknet), either update *labels.txt* or put *dji.names* in the repository and modify this line
-labelfile-path=dji.names
+labelfile-path=/home/polystar/robomaster-2022-cv/detection/data/dji.names
 
 # Batch size
 batch-size=1
