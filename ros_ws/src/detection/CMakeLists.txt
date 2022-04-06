@@ -30,6 +30,61 @@ else()
   endif()
 endif()
 
+if(DEEPSTREAM)
+  # Gstreamer
+  find_package(PkgConfig) 
+  pkg_search_module(GLIB REQUIRED glib-2.0) 
+  pkg_search_module(GSTREAMER REQUIRED gstreamer-1.0)
+  pkg_check_modules(GST_VIDEO REQUIRED gstreamer-video-1.0)
+  pkg_search_module(GST_RTSP REQUIRED gstreamer-rtsp-1.0)
+  pkg_check_modules(JSON_GLIB REQUIRED json-glib-1.0)
+
+  find_package(CUDA REQUIRED)
+
+  
+  set(Deepstream_PATH /opt/nvidia/deepstream/deepstream)
+  file(GLOB Deepstream_common ${Deepstream_PATH}/sources/apps/apps-common/src/*.c)
+
+  link_directories(
+    /usr/local/cuda-10.2/lib64
+    ${Deepstream_PATH}/lib
+  )
+
+  add_library(deepstream-runner
+    src/deepstream-app/deepstream_app_config_parser.c
+    src/deepstream-app/deepstream_app_main.c
+    src/deepstream-app/deepstream_app.c
+    ${Deepstream_common}
+  )
+
+  target_link_libraries(deepstream-runner
+    nvdsgst_meta
+    nvds_meta
+    nvdsgst_helper
+    nvdsgst_smartrecord
+    nvds_utils
+    nvds_msgbroker
+    m
+    gstrtspserver-1.0
+    dl
+    ${GSTREAMER_LIBRARIES}
+    ${GST_VIDEO_LIBRARIES}
+    ${GST_RTSP_LIBRARIES}
+    ${JSON_GLIB_LIBRARIES}
+    ${CUDA_LIBRARIES}
+  ) # That's a lot
+
+  set(Deepstream_INCLUDE_DIRS 
+    src/deepstream_app
+    ${Deepstream_PATH}/sources/apps/apps-common/includes
+    ${Deepstream_PATH}/sources/includes
+    ${GSTREAMER_INCLUDE_DIRS}
+    ${JSON_GLIB_INCLUDE_DIRS}
+    ${CUDA_INCLUDE_DIRS}
+    /usr/include/gstreamer-1.0
+  )
+endif()
+
 ## ----- Messages ----- ##
 
 ## Generate messages in the 'msg' folder
@@ -61,6 +116,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
   include
+  ${Deepstream_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
   ${Darknet_INCLUDE_DIRS}
 )
