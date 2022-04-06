@@ -24,7 +24,7 @@ gpu-id=0
 cudadec-memtype=0
 
 [sink0]
-enable=1
+enable=0
 type=2
 sync=0
 gpu-id=0

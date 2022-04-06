@@ -596,18 +596,6 @@ analytics_done_buf_prob (GstPad * pad, GstPadProbeInfo * info, gpointer u_data)
 
   deepstreamCallback(appCtx, batch_meta);
 
-  /*
-   * Output KITTI labels with tracking ID if configured to do so.
-   */
-  write_kitti_track_output(appCtx, batch_meta);
-  if (appCtx->config.tracker_config.enable_past_frame)
-  {
-      write_kitti_past_track_output (appCtx, batch_meta);
-  }
-  if (appCtx->bbox_generated_post_analytics_cb)
-  {
-    appCtx->bbox_generated_post_analytics_cb (appCtx, buf, batch_meta, index);
-  }
   return GST_PAD_PROBE_OK;
 }
 

@@ -31,10 +31,31 @@ extern "C" {
 extern int deepstream_app_main(int argc, const char** argv);
 
 void deepstreamCallback(void* appCtx_v, void* batch_meta_v) {
-    // Do stuff ...
+    NvDsBatchMeta* batch_meta = (NvDsBatchMeta*)batch_meta_v;
+    AppCtx* appCtx = (AppCtx*)appCtx_v;
 
-    std::cout << "Callback!\n";
     detection::Detections dets;
+
+    for (NvDsMetaList* l_frame = (NvDsMetaList*)batch_meta->frame_meta_list;
+         l_frame != NULL; l_frame = l_frame->next) {
+        NvDsFrameMeta* frame_meta = (NvDsFrameMeta*)l_frame->data;
+
+        for (NvDsMetaList* l_obj = frame_meta->obj_meta_list; l_obj != NULL;
+             l_obj = l_obj->next) {
+            NvDsObjectMeta* obj = (NvDsObjectMeta*)l_obj->data;
+
+            detection::Detection det;
+
+            det.cls = obj->class_id;
+            det.confidence = obj->confidence;
+            det.x = obj->rect_params.left;
+            det.y = obj->rect_params.top;
+            det.w = obj->rect_params.width;
+            det.h = obj->rect_params.height;
+
+            dets.detections.push_back(det);
+        }
+    }
     det_callback(dets);
 }
 }

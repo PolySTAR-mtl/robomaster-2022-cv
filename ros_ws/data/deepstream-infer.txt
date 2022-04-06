@@ -37,7 +37,7 @@ model-file=/home/polystar/robomaster-2022-cv/detection/data/yolov3_custom_best.w
 # *fp16* what precision to use for the variable. It has to be consistent with *network-mode* below
 # FP16 means precision is reduced to Float 16 bits instead of Float 32 bits. 
 # It will slightly lower accuracy but drastically improve performance!
-model-engine-file=model_b1_gpu0_fp16.engine
+model-engine-file=/home/polystar/robomaster-2022-cv/detection/model_b1_gpu0_fp16.engine
 
 # Model labels file (dji.names of darknet), either update *labels.txt* or put *dji.names* in the repository and modify this line
 labelfile-path=/home/polystar/robomaster-2022-cv/detection/data/dji.names
