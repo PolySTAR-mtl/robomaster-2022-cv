@@ -1,0 +1,7 @@
+data/AllianceVsArtisans_BO2_2_1.jpg
+data/AllianceVsArtisans_BO2_2_1_0.jpg
+data/AllianceVsArtisans_BO2_2_1_1.jpg
+data/AllianceVsArtisans_BO2_2_1_2.jpg
+data/AllianceVsArtisans_BO2_2_1_3.jpg
+data/AllianceVsArtisans_BO2_2_1_4.jpg
+data/AllianceVsArtisans_BO2_2_1_5.jpg
