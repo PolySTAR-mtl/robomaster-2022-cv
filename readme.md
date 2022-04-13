@@ -31,6 +31,9 @@ place, or specify the path of the library when building (don't forget to build i
 catkin_make -DDARKNET_PATH=../detection/darknet
 ```
 
+If you build it using the `Makefile`, make sure to set `LIBSO=1` to build the shared library,
+and enable the relevant options if you can : OpenMP, GPU, CUDA, CUDNN, CUDNN_HALF.
+
 **TODO** : list of package requirements
 
 ## Code guidelines
