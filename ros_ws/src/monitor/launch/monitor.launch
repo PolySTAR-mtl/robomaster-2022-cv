@@ -1,3 +1,11 @@
+<!--
+    @file monitor.launch
+    @brief Visual & terminal-based monitor launch file
+    @author Sébastien Darche <sebastien.darche@polymtl.ca>
+
+    @arg headless If true, does not launch the video viewer
+-->
+
 <launch>
     <!-- Args -->
     <arg name="headless" default="false"/>
