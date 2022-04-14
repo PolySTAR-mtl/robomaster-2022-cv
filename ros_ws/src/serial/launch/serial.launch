@@ -1,3 +1,11 @@
+<!--
+    @file serial.launch
+    @brief Serial interface launch file
+    @author Sébastien Darche <sebastien.darche@polymtl.ca>
+
+    @arg params_path absolute path to the serial configuration (ros_ws/data/param-serial.yaml
+-->
+
 <launch>
     <!-- Args -->
     <arg name="params_path"/>
