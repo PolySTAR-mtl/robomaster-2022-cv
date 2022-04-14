@@ -1,3 +1,12 @@
+<!--
+    @file detection.launch
+    @brief Main detection node launch file
+    @author Sébastien Darche <sebastien.darche@polymtl.ca>
+
+    @arg params_path absolute path to the ROS Darknet configuration (ros_ws/data/param-yolo.yaml)
+    @arg workspace absolute path to the `ros_ws` directory
+-->
+
 <launch>
     <!-- Args -->
     <arg name="params_path"/>
