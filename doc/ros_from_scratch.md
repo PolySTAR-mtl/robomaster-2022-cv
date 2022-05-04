@@ -34,7 +34,7 @@ You can save the state of the container `docker commit <container:id>  <image:na
 
 ### Detection: modify and run
 
-1. Modify `video_sender.launch`: `<remap from="/video_file/image_raw" to="/detection/image_in"/>` -> `<remap from="/video_file/image_raw" to="/detector/image_in"/>`.
+1. *If you rosrun the detection* Modify `video_sender.launch`: `<remap from="/video_file/image_raw" to="/detection/image_in"/>` -> `<remap from="/video_file/image_raw" to="/detector/image_in"/>`. *If not* rosbomaster.launch. 
 2. Add `image_view.launch` to visualise:
 ```
 <?xml version="1.0"?>
