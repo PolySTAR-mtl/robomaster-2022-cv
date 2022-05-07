@@ -6,8 +6,11 @@
     <include file="$(find video_stream_opencv)/launch/camera.launch" >
         <arg name="camera_name" value="video_file" />
         <arg name="video_stream_provider" value="$(arg file)" />
-        <arg name="set_camera_fps" value="30"/>
-        <arg name="loop_videofile" value="true"/>
+        <arg name="buffer_queue_size" value="1" />
+        <arg name="set_camera_fps" value="30" />
+        <arg name="fps" value="30" />
+        <arg name="loop_videofile" value="true" />
+        <arg name="visualize" value="false" />
     </include>
 </launch>
 

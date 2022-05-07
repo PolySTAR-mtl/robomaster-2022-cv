@@ -1,0 +1,11 @@
+# YOLO / Darknet configuration paths
+
+net:
+  datacfg: '$(arg workspace)/../detection/data/dji.data'
+  config_path: '$(arg workspace)/../detection/data/yolov3_tiny_custom.cfg'
+  weights: '$(arg workspace)/../detection/data/yolov3_tiny_custom_best.weights'
+  labels: '$(arg workspace)/../detection/data/dji.names'
+  
+  nms: 0.45
+  tresh: 0.24
+  hier_tresh: 0.5
