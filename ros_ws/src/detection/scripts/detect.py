@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 @file detection.py
 @brief Main detection node : bounding box extraction from the video stream
@@ -22,6 +22,7 @@ class Detector:
             'camera_in', Image, self.image_callback, queue_size=1)
 
         self.pub_detect = rospy.Publisher('boxes', Detections, queue_size=1)
+        rospy.loginfo('Detector created')
 
     def image_callback(self, im: Image):
         try:
@@ -29,7 +30,6 @@ class Detector:
         except CvBridgeError as e:
             rospy.logerr(f'Could not get cv2 image : {e}')
             return
-
         rospy.logdebug('Detector.image_callback TODO')
         return
 
