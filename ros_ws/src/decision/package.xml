@@ -11,7 +11,7 @@
   <author email="sebastien.darche@polymtl.ca">Sébastien Darche</author>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>detetection</build_depend>
+  <build_depend>detection</build_depend>
   <build_depend>serial</build_depend>
   <exec_depend>detection</exec_depend>
   <exec_depend>serial</exec_depend>

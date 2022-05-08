@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(monitor)
+project(decision)
 
 add_compile_options(-std=c++17)
 
@@ -19,7 +19,6 @@ find_package(catkin REQUIRED COMPONENTS
 ###################################
 
 catkin_package(
-  INCLUDE_DIRS include
   CATKIN_DEPENDS detection serial
 )
 
@@ -30,7 +29,6 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -38,9 +36,6 @@ add_executable(simple_tracker
   src/simple_tracker.cpp
 )
 
-target_link_libraries(monitor_video
-  ${catkin_LIBRARIES}
-)
 
 #############
 ## Testing ##
