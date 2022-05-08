@@ -118,8 +118,10 @@ void SerialSpinner::initSerial(const std::string& device) {
     tty.c_cc[VTIME] = 0;
 
     // Set baud
-    cfsetispeed(&tty, baud_rate);
-    cfsetospeed(&tty, baud_rate);
+    int err = cfsetispeed(&tty, B230400);
+    err += cfsetospeed(&tty, B230400);
+
+    if(err != 0) { throw std::runtime_error("Could not set IOspeed"); }
 
     // Aaaand .. we're done ! Commit to the OS
     if (tcsetattr(fd, TCSANOW, &tty) != 0) {
@@ -154,6 +156,13 @@ void SerialSpinner::handleSerial() {
         return;
     }
 
+    uint8_t* ptr = reinterpret_cast<uint8_t*>(&cmd);
+    for(auto i = 0u; i < sizeof(cmd); ++i) {
+	    std::cout << std::hex << static_cast<unsigned int>(ptr[i]) << ' ';
+    }
+
+    std::cout << '\n';
+
     if (cmd.start_byte != serial::START_FRAME) {
         ROS_ERROR("Start frame not recognized, dropping command");
         return;
@@ -174,6 +183,8 @@ void SerialSpinner::handleSerial() {
             ROS_ERROR("Incomplete read on target switch order");
             return;
         }
+
+	std::cout << static_cast<unsigned int>(data_sw) << '\n';
 
         // Create ROS message
         switch (data_sw) {
@@ -240,6 +251,15 @@ void SerialSpinner::callbackTarget(const serial::TargetConstPtr& target) {
     msg.theta = target->theta;
     msg.phi = target->phi;
     msg.dist = target->dist;
+
+    std::cout << "Target : " << msg.theta << ' ' << msg.phi << ' ' << msg.dist
+              << '\n';
+
+    uint8_t* ptr = reinterpret_cast<uint8_t*>(&msg);
+    for(auto i = 0u; i < sizeof(msg); ++i) {
+	    std::cout << std::hex << static_cast<unsigned int>(ptr[i]) << ' ';
+    }
+    std::cout << std::dec <<'\n';
 
     int bytes = write(fd, &msg, sizeof(msg));
     if (bytes != sizeof(msg)) {
