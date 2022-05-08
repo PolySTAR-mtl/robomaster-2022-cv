@@ -64,6 +64,8 @@ class SimpleTracker {
         target.dist = 2000u; // 2 m
         target.located = true;
         target.stamp = ros::Time::now();
+
+        return target;
     }
 
   private:
