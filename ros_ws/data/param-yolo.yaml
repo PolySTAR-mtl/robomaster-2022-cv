@@ -5,6 +5,7 @@ net:
   config_path: '$(arg workspace)/../detection/data/yolov3_custom.cfg'
   weights: '$(arg workspace)/../detection/data/yolov3_custom_best.weights'
   labels: '$(arg workspace)/../detection/data/dji.names'
+  deepstream: '$(arg workspace)/data/deepstream_app_config.txt'
   
   nms: 0.45
   tresh: 0.24
