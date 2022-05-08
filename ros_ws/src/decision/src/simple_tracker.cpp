@@ -56,8 +56,8 @@ class SimpleTracker {
         auto x_c = det.x + det.w / 2 - im_w;
         auto y_c = det.y + det.h / 2 - im_h;
 
-        uint16_t theta = (y_c * alpha_y + M_PI_2) * 1000u;
-        int16_t phi = x_c * alpha_x;
+        uint16_t theta = std::floor((y_c * alpha_y + M_PI_2)) * 20u;
+        int16_t phi = std::floor(x_c * alpha_x) * 20u;
 
         target.theta = theta;
         target.phi = phi;
@@ -75,8 +75,8 @@ class SimpleTracker {
 
     detection::Detection last_det;
 
-    int im_w = 1920 / 2;
-    int im_h = 1080 / 2;
+    float im_w = 1920 / 2;
+    float im_h = 1080 / 2;
 
     // Scaling factor
     float alpha_y = 0.1;
