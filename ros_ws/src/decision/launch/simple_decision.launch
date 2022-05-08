@@ -1,0 +1,7 @@
+<launch>
+    <!-- Nodes -->
+    <remap from="/decision/detections" to="/detection/detections"/>
+    <node name="decision" pkg="decision" type="simple_tracker" output="screen">
+    </node>
+
+</launch>
