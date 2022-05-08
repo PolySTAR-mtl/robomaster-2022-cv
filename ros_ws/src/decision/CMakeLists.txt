@@ -36,6 +36,9 @@ add_executable(simple_tracker
   src/simple_tracker.cpp
 )
 
+target_link_libraries(simple_tracker
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Testing ##

@@ -10,10 +10,12 @@
     <include file="$(find detection)/launch/detection.launch">
         <arg name="workspace" value="$(arg workspace)"/>
         <arg name="params_path" value="$(arg workspace)/data/param-yolo.yaml"/>
+	<arg name="deepstream" value="true"/>
+	<arg name="darknet" value="false"/>
     </include>
 
     <!-- Camera -->
-    <remap from="/main_camera/image_raw" to="/detection/image_in"/>
-    <include file="$(find jetson_camera)/launch/jetson_camera.launch"/>
+    <!--<remap from="/main_camera/image_raw" to="/detection/image_in"/>-->
+    <!--<include file="$(find jetson_camera)/launch/jetson_camera.launch"/>-->
 
 </launch>

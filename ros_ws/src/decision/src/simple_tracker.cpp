@@ -53,11 +53,15 @@ class SimpleTracker {
     serial::Target toTarget(detection::Detection& det) {
         serial::Target target;
 
+	std::cout << "Det : " << det.x << " ( " << det.w << " ) " << det.y << " ( " << det.h << " )\n";
+
         auto x_c = det.x + det.w / 2 - im_w / 2;
         auto y_c = det.y + det.h / 2 - im_h / 2;
 
-        uint16_t theta = std::floor((y_c * alpha_y + M_PI_2)) * 20u;
-        int16_t phi = std::floor(x_c * alpha_x) * 20u;
+	std::cout << "x_c = " << x_c << " ; y_c = " << y_c << '\n';
+
+        uint16_t theta = std::floor((y_c * alpha_y + M_PI_2) * 1000.f);
+        int16_t phi = std::floor(x_c * alpha_x * 1000.f);
 
         target.theta = theta;
         target.phi = phi;
@@ -75,12 +79,12 @@ class SimpleTracker {
 
     detection::Detection last_det;
 
-    float im_w = 1920 / 2;
-    float im_h = 1080 / 2;
+    float im_w = 416 / 2;
+    float im_h = 416 / 2;
 
     // Scaling factor
-    float alpha_y = 0.1;
-    float alpha_x = 0.1;
+    float alpha_y = 0.001;
+    float alpha_x = 0.01;
 };
 
 int main(int argc, char** argv) {
