@@ -28,8 +28,10 @@ else()
     set(Darknet_LIBRARIES ${DARKNET_PATH}/libdarknet.so)
     set(Darknet_INCLUDE_DIRS ${DARKNET_PATH}/include ${DARKNET_PATH}/src)
   else()
-    message("DARKNET_PATH not set, searching for darknet in the system")
-    find_package(Darknet REQUIRED)
+    if(NOT DEEPSTREAM)
+      message("DARKNET_PATH not set, searching for darknet in the system")
+      find_package(Darknet REQUIRED)
+    endif()
   endif()
 endif()
 
@@ -68,6 +70,7 @@ if(DEEPSTREAM)
     nvdsgst_smartrecord
     nvds_utils
     nvds_msgbroker
+    nvbufsurftransform
     m
     gstrtspserver-1.0
     dl
