@@ -53,8 +53,8 @@ class SimpleTracker {
     serial::Target toTarget(detection::Detection& det) {
         serial::Target target;
 
-        auto x_c = det.x + det.w / 2 - im_w;
-        auto y_c = det.y + det.h / 2 - im_h;
+        auto x_c = det.x + det.w / 2 - im_w / 2;
+        auto y_c = det.y + det.h / 2 - im_h / 2;
 
         uint16_t theta = std::floor((y_c * alpha_y + M_PI_2)) * 20u;
         int16_t phi = std::floor(x_c * alpha_x) * 20u;
