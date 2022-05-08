@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>testing</name>
+  <version>0.1.0</version>
+  <description>Dummy nodes to test interfaces</description>
+
+  <maintainer email="sebastien.darche@polymtl.ca">Sébastien Darche</maintainer>
+
+  <license>MIT</license>
+
+  <author email="sebastien.darche@polymtl.ca">Sébastien Darche</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>serial</build_depend>
+  <build_export_depend>serial</build_export_depend>
+  <exec_depend>serial</exec_depend>
+
+  <export></export>
+
+</package>
