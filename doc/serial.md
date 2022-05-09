@@ -23,3 +23,19 @@ The `serial_interface` node **publishes** to the following topics :
 - `/serial/hp` : Health points of the robots;
 
 The corresponding messages are defined in the serial package (`ros_ws/src/serial/msg`).
+
+## Jetson setup
+
+The Tegra High speed Serial (THS) device is reserved for root users, so a chmod is
+necessary (at each reboot) in order to use the serial node.
+
+By default, the port is used as a serial terminal. The service has to be disabled
+in order to allow the port to be used for communication : 
+
+```bash
+sudo systemctl stop nvgetty
+sudo systemctl disable nvgetty
+```
+
+Followed by a reboot.
+
