@@ -4,5 +4,4 @@
 **/__pycache__/
 **/*.jpg
 **/*.png
-**/yolov4.cfg
-**/yolov4.weights
+**/*.weights

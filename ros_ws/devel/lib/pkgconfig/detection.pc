@@ -1,0 +1,8 @@
+prefix=/root/robomaster-2022-cv/ros_ws/devel
+
+Name: detection
+Description: Description of detection
+Version: 0.1.0
+Cflags: -I/root/robomaster-2022-cv/ros_ws/devel/include -I/root/robomaster-2022-cv/ros_ws/src/detection/include
+Libs: -L${prefix}/lib 
+Requires: 

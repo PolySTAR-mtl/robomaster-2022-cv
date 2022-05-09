@@ -1,0 +1,8 @@
+prefix=/root/robomaster-2022-cv/ros_ws/devel
+
+Name: monitor
+Description: Description of monitor
+Version: 0.1.0
+Cflags: -I/root/robomaster-2022-cv/ros_ws/src/monitor/include
+Libs: -L${prefix}/lib 
+Requires: detection

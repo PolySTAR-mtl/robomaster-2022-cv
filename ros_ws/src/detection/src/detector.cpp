@@ -131,7 +131,7 @@ image matToImage(cv::Mat& mat) {
 void Detector::imageCallback(const sensor_msgs::ImagePtr& img) {
     constexpr float ratio = 1.f / 256.f;
 
-    std::cout << "Incoming frame : " << img->header.seq << '\n';
+    std::cout << "Incoming frame: " << img->header.seq << '\n';
 
     auto img_opencv = cv_bridge::toCvCopy(img);
 
@@ -148,7 +148,9 @@ void Detector::imageCallback(const sensor_msgs::ImagePtr& img) {
     auto t1 = std::chrono::steady_clock::now();
 
 
-    std::cout << std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0).count() << '\n';
+    auto timelapse = std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0).count();
+    std::cout << timelapse << '\n';
+    
     // Fetch boxes
     int nboxes = 0;
     detection_darknet* dets = get_network_boxes(
@@ -159,18 +161,18 @@ void Detector::imageCallback(const sensor_msgs::ImagePtr& img) {
     for (auto i = 0; i < nboxes; ++i) {
         auto& d = dets[i];
 
+        d.best_class_idx = findBestClass(d.prob, p->labels.size(), p->tresh);
+
+        if (d.best_class_idx == -1) {
+            // No best match found: continue handling rest of detection
+            continue;
+        }
+
         for (auto j = 0; j < p->labels.size(); ++j) {
             std::cout << d.prob[j] << ' ';
         }
 
-        d.best_class_idx = findBestClass(d.prob, p->labels.size(), p->tresh);
-
-        if (d.best_class_idx == -1) {
-            // No best match found : continue handling rest of detection
-            continue;
-        }
-
-        std::cout << ", best " << p->labels[d.best_class_idx] << '\n';
+        std::cout << "best: " << p->labels[d.best_class_idx] << '\n';
 
         detection::Detection det;
         det.x = d.bbox.x * im.w;
@@ -181,8 +183,8 @@ void Detector::imageCallback(const sensor_msgs::ImagePtr& img) {
         det.confidence = d.prob[det.cls];
 
         msg.detections.push_back(det);
+        msg.timelapse = timelapse;
     }
-
     std::cout << '\n';
 
     pub_detections.publish(msg);

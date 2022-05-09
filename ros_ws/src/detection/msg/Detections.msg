@@ -4,4 +4,4 @@
 # Header header
 Detection[] detections
 
-uint8 frame
+uint32 timelapse

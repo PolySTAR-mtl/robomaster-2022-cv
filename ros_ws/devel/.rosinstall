@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /root/robomaster-2022-cv/ros_ws/devel/setup.sh

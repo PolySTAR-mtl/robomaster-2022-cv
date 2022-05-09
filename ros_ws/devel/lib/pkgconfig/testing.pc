@@ -1,0 +1,8 @@
+prefix=/root/robomaster-2022-cv/ros_ws/devel
+
+Name: testing
+Description: Description of testing
+Version: 0.1.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: serial
