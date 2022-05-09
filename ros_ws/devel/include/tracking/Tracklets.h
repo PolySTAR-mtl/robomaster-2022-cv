@@ -15,7 +15,6 @@
 #include <ros/builtin_message_traits.h>
 #include <ros/message_operations.h>
 
-#include <std_msgs/Header.h>
 #include <tracking/Tracklet.h>
 
 namespace tracking
@@ -26,19 +25,14 @@ struct Tracklets_
   typedef Tracklets_<ContainerAllocator> Type;
 
   Tracklets_()
-    : header()
-    , tracklets()  {
+    : tracklets()  {
     }
   Tracklets_(const ContainerAllocator& _alloc)
-    : header(_alloc)
-    , tracklets(_alloc)  {
+    : tracklets(_alloc)  {
   (void)_alloc;
     }
 
 
-
-   typedef  ::std_msgs::Header_<ContainerAllocator>  _header_type;
-  _header_type header;
 
    typedef std::vector< ::tracking::Tracklet_<ContainerAllocator> , typename ContainerAllocator::template rebind< ::tracking::Tracklet_<ContainerAllocator> >::other >  _tracklets_type;
   _tracklets_type tracklets;
@@ -72,8 +66,7 @@ return s;
 template<typename ContainerAllocator1, typename ContainerAllocator2>
 bool operator==(const ::tracking::Tracklets_<ContainerAllocator1> & lhs, const ::tracking::Tracklets_<ContainerAllocator2> & rhs)
 {
-  return lhs.header == rhs.header &&
-    lhs.tracklets == rhs.tracklets;
+  return lhs.tracklets == rhs.tracklets;
 }
 
 template<typename ContainerAllocator1, typename ContainerAllocator2>
@@ -116,12 +109,12 @@ struct IsFixedSize< ::tracking::Tracklets_<ContainerAllocator> const>
 
 template <class ContainerAllocator>
 struct HasHeader< ::tracking::Tracklets_<ContainerAllocator> >
-  : TrueType
+  : FalseType
   { };
 
 template <class ContainerAllocator>
 struct HasHeader< ::tracking::Tracklets_<ContainerAllocator> const>
-  : TrueType
+  : FalseType
   { };
 
 
@@ -130,12 +123,12 @@ struct MD5Sum< ::tracking::Tracklets_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "b9ec897e27b256c83b04eb795b1db40e";
+    return "eaf004b7dd6cb035732a86956a387ae0";
   }
 
   static const char* value(const ::tracking::Tracklets_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xb9ec897e27b256c8ULL;
-  static const uint64_t static_value2 = 0x3b04eb795b1db40eULL;
+  static const uint64_t static_value1 = 0xeaf004b7dd6cb035ULL;
+  static const uint64_t static_value2 = 0x732a86956a387ae0ULL;
 };
 
 template<class ContainerAllocator>
@@ -157,24 +150,8 @@ struct Definition< ::tracking::Tracklets_<ContainerAllocator> >
     return "# Tracklets.msg\n"
 "## List of tracked bounding boxes\n"
 "\n"
-"Header header\n"
+"# Header header\n"
 "Tracklet[] tracklets\n"
-"================================================================================\n"
-"MSG: std_msgs/Header\n"
-"# Standard metadata for higher-level stamped data types.\n"
-"# This is generally used to communicate timestamped data \n"
-"# in a particular coordinate frame.\n"
-"# \n"
-"# sequence ID: consecutively increasing ID \n"
-"uint32 seq\n"
-"#Two-integer timestamp that is expressed as:\n"
-"# * stamp.sec: seconds (stamp_secs) since epoch (in Python the variable is called 'secs')\n"
-"# * stamp.nsec: nanoseconds since stamp_secs (in Python the variable is called 'nsecs')\n"
-"# time-handling sugar is provided by the client library\n"
-"time stamp\n"
-"#Frame this data is associated with\n"
-"string frame_id\n"
-"\n"
 "================================================================================\n"
 "MSG: tracking/Tracklet\n"
 "# Tracklet.msg\n"
@@ -215,7 +192,6 @@ namespace serialization
   {
     template<typename Stream, typename T> inline static void allInOne(Stream& stream, T m)
     {
-      stream.next(m.header);
       stream.next(m.tracklets);
     }
 
@@ -235,9 +211,6 @@ struct Printer< ::tracking::Tracklets_<ContainerAllocator> >
 {
   template<typename Stream> static void stream(Stream& s, const std::string& indent, const ::tracking::Tracklets_<ContainerAllocator>& v)
   {
-    s << indent << "header: ";
-    s << std::endl;
-    Printer< ::std_msgs::Header_<ContainerAllocator> >::stream(s, indent + "  ", v.header);
     s << indent << "tracklets[]" << std::endl;
     for (size_t i = 0; i < v.tracklets.size(); ++i)
     {

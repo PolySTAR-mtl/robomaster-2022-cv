@@ -3,5 +3,3 @@
 
 # Header header
 Detection[] detections
-
-uint32 timelapse
