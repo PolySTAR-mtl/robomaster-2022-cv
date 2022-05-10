@@ -7,8 +7,8 @@
           W
           H-VAL
           H
-          CLS-VAL
-          CLS
-          CONFIDENCE-VAL
-          CONFIDENCE
+          CLSS-VAL
+          CLSS
+          SCORE-VAL
+          SCORE
 ))

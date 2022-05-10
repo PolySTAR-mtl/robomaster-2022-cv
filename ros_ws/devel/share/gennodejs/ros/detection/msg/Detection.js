@@ -22,8 +22,8 @@ class Detection {
       this.y = null;
       this.w = null;
       this.h = null;
-      this.cls = null;
-      this.confidence = null;
+      this.clss = null;
+      this.score = null;
     }
     else {
       if (initObj.hasOwnProperty('x')) {
@@ -50,17 +50,17 @@ class Detection {
       else {
         this.h = 0.0;
       }
-      if (initObj.hasOwnProperty('cls')) {
-        this.cls = initObj.cls
+      if (initObj.hasOwnProperty('clss')) {
+        this.clss = initObj.clss
       }
       else {
-        this.cls = 0;
+        this.clss = 0;
       }
-      if (initObj.hasOwnProperty('confidence')) {
-        this.confidence = initObj.confidence
+      if (initObj.hasOwnProperty('score')) {
+        this.score = initObj.score
       }
       else {
-        this.confidence = 0.0;
+        this.score = 0.0;
       }
     }
   }
@@ -75,10 +75,10 @@ class Detection {
     bufferOffset = _serializer.float32(obj.w, buffer, bufferOffset);
     // Serialize message field [h]
     bufferOffset = _serializer.float32(obj.h, buffer, bufferOffset);
-    // Serialize message field [cls]
-    bufferOffset = _serializer.uint8(obj.cls, buffer, bufferOffset);
-    // Serialize message field [confidence]
-    bufferOffset = _serializer.float32(obj.confidence, buffer, bufferOffset);
+    // Serialize message field [clss]
+    bufferOffset = _serializer.uint8(obj.clss, buffer, bufferOffset);
+    // Serialize message field [score]
+    bufferOffset = _serializer.float32(obj.score, buffer, bufferOffset);
     return bufferOffset;
   }
 
@@ -94,10 +94,10 @@ class Detection {
     data.w = _deserializer.float32(buffer, bufferOffset);
     // Deserialize message field [h]
     data.h = _deserializer.float32(buffer, bufferOffset);
-    // Deserialize message field [cls]
-    data.cls = _deserializer.uint8(buffer, bufferOffset);
-    // Deserialize message field [confidence]
-    data.confidence = _deserializer.float32(buffer, bufferOffset);
+    // Deserialize message field [clss]
+    data.clss = _deserializer.uint8(buffer, bufferOffset);
+    // Deserialize message field [score]
+    data.score = _deserializer.float32(buffer, bufferOffset);
     return data;
   }
 
@@ -112,7 +112,7 @@ class Detection {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return 'b6ef12160302895f4532528b12bd7ec3';
+    return '605d6371c30b664ec10c76dcf5a9542d';
   }
 
   static messageDefinition() {
@@ -121,13 +121,6 @@ class Detection {
     # Detection.msg
     ## Bounding box with class and confidence
     
-    # Constants
-    
-    # TODO
-    # uint8 car
-    # uint8 armor_module
-    # ...
-    
     # Bounding box
     float32 x
     float32 y
@@ -135,9 +128,9 @@ class Detection {
     float32 h
     
     # class
-    uint8 cls
+    uint8 clss
     
-    float32 confidence
+    float32 score
     `;
   }
 
@@ -175,18 +168,18 @@ class Detection {
       resolved.h = 0.0
     }
 
-    if (msg.cls !== undefined) {
-      resolved.cls = msg.cls;
+    if (msg.clss !== undefined) {
+      resolved.clss = msg.clss;
     }
     else {
-      resolved.cls = 0
+      resolved.clss = 0
     }
 
-    if (msg.confidence !== undefined) {
-      resolved.confidence = msg.confidence;
+    if (msg.score !== undefined) {
+      resolved.score = msg.score;
     }
     else {
-      resolved.confidence = 0.0
+      resolved.score = 0.0
     }
 
     return resolved;

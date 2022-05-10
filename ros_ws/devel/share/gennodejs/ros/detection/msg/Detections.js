@@ -20,7 +20,6 @@ class Detections {
     if (initObj === null) {
       // initObj === null is a special case for deserialization where we don't initialize fields
       this.detections = null;
-      this.timelapse = null;
     }
     else {
       if (initObj.hasOwnProperty('detections')) {
@@ -28,12 +27,6 @@ class Detections {
       }
       else {
         this.detections = [];
-      }
-      if (initObj.hasOwnProperty('timelapse')) {
-        this.timelapse = initObj.timelapse
-      }
-      else {
-        this.timelapse = 0;
       }
     }
   }
@@ -46,8 +39,6 @@ class Detections {
     obj.detections.forEach((val) => {
       bufferOffset = Detection.serialize(val, buffer, bufferOffset);
     });
-    // Serialize message field [timelapse]
-    bufferOffset = _serializer.uint32(obj.timelapse, buffer, bufferOffset);
     return bufferOffset;
   }
 
@@ -62,15 +53,13 @@ class Detections {
     for (let i = 0; i < len; ++i) {
       data.detections[i] = Detection.deserialize(buffer, bufferOffset)
     }
-    // Deserialize message field [timelapse]
-    data.timelapse = _deserializer.uint32(buffer, bufferOffset);
     return data;
   }
 
   static getMessageSize(object) {
     let length = 0;
     length += 21 * object.detections.length;
-    return length + 8;
+    return length + 4;
   }
 
   static datatype() {
@@ -80,7 +69,7 @@ class Detections {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return '5a80ac5cf722ceea32bf50e93318cacc';
+    return 'cafb60d89a040a540def8d31f5cdc037';
   }
 
   static messageDefinition() {
@@ -91,19 +80,10 @@ class Detections {
     
     # Header header
     Detection[] detections
-    
-    uint32 timelapse
     ================================================================================
     MSG: detection/Detection
     # Detection.msg
     ## Bounding box with class and confidence
-    
-    # Constants
-    
-    # TODO
-    # uint8 car
-    # uint8 armor_module
-    # ...
     
     # Bounding box
     float32 x
@@ -112,9 +92,9 @@ class Detections {
     float32 h
     
     # class
-    uint8 cls
+    uint8 clss
     
-    float32 confidence
+    float32 score
     `;
   }
 
@@ -132,13 +112,6 @@ class Detections {
     }
     else {
       resolved.detections = []
-    }
-
-    if (msg.timelapse !== undefined) {
-      resolved.timelapse = msg.timelapse;
-    }
-    else {
-      resolved.timelapse = 0
     }
 
     return resolved;

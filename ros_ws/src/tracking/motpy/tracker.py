@@ -301,12 +301,10 @@ class MultiObjectTracker:
             t.predict()
 
         # assigned trackers: correct
-        det_indices = []
         for match in matches:
             track_idx, det_idx = match[0], match[1]
             self.trackers[track_idx].update(detection=detections[det_idx])
-            det_indices.append(det_idx)
-        """
+        
         # not assigned detections: create new trackers POF
         assigned_det_idxs = set(matches[:, 1]) if len(matches) > 0 else []
         for det_idx in set(range(len(detections))).difference(assigned_det_idxs):
@@ -314,13 +312,13 @@ class MultiObjectTracker:
                               model_spec=self.model_spec,
                               **self.tracker_kwargs)
             self.trackers.append(tracker)
-        """
+        
         # unassigned trackers
         assigned_track_idxs = set(matches[:, 0]) if len(matches) > 0 else []
         for track_idx in set(range(len(self.trackers))).difference(assigned_track_idxs):
             self.trackers[track_idx].stale()
-        """
+        
         # cleanup dead trackers
         self.cleanup_trackers()
-        """
-        return self.active_tracks(**self.active_tracks_kwargs), det_indices
+        
+        return self.active_tracks(**self.active_tracks_kwargs)

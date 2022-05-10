@@ -14,17 +14,15 @@
 
 (defclass detection::Detections
   :super ros::object
-  :slots (_detections _timelapse ))
+  :slots (_detections ))
 
 (defmethod detection::Detections
   (:init
    (&key
     ((:detections __detections) ())
-    ((:timelapse __timelapse) 0)
     )
    (send-super :init)
    (setq _detections __detections)
-   (setq _timelapse (round __timelapse))
    self)
   (:detections
    (&rest __detections)
@@ -33,16 +31,11 @@
      (progn
        (if __detections (setq _detections (car __detections)))
        _detections)))
-  (:timelapse
-   (&optional __timelapse)
-   (if __timelapse (setq _timelapse __timelapse)) _timelapse)
   (:serialization-length
    ()
    (+
     ;; detection/Detection[] _detections
     (apply #'+ (send-all _detections :serialization-length)) 4
-    ;; uint32 _timelapse
-    4
     ))
   (:serialize
    (&optional strm)
@@ -53,8 +46,6 @@
      (dolist (elem _detections)
        (send elem :serialize s)
        )
-     ;; uint32 _timelapse
-       (write-long _timelapse s)
      ;;
      (if (null strm) (get-output-stream-string s))))
   (:deserialize
@@ -66,13 +57,11 @@
      (dolist (elem- _detections)
      (send elem- :deserialize buf ptr-) (incf ptr- (send elem- :serialization-length))
      ))
-   ;; uint32 _timelapse
-     (setq _timelapse (sys::peek buf ptr- :integer)) (incf ptr- 4)
    ;;
    self)
   )
 
-(setf (get detection::Detections :md5sum-) "5a80ac5cf722ceea32bf50e93318cacc")
+(setf (get detection::Detections :md5sum-) "cafb60d89a040a540def8d31f5cdc037")
 (setf (get detection::Detections :datatype-) "detection/Detections")
 (setf (get detection::Detections :definition-)
       "# Detections.msg
@@ -80,19 +69,10 @@
 
 # Header header
 Detection[] detections
-
-uint32 timelapse
 ================================================================================
 MSG: detection/Detection
 # Detection.msg
 ## Bounding box with class and confidence
-
-# Constants
-
-# TODO
-# uint8 car
-# uint8 armor_module
-# ...
 
 # Bounding box
 float32 x
@@ -101,13 +81,13 @@ float32 w
 float32 h
 
 # class
-uint8 cls
+uint8 clss
 
-float32 confidence
+float32 score
 ")
 
 
 
-(provide :detection/Detections "5a80ac5cf722ceea32bf50e93318cacc")
+(provide :detection/Detections "cafb60d89a040a540def8d31f5cdc037")
 
 

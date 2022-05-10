@@ -9,7 +9,7 @@ import struct
 import tracking.msg
 
 class Tracklets(genpy.Message):
-  _md5sum = "eaf004b7dd6cb035732a86956a387ae0"
+  _md5sum = "09e49bce30706a9a7b107c52941becdc"
   _type = "tracking/Tracklets"
   _has_header = False  # flag to mark the presence of a Header object
   _full_text = """# Tracklets.msg
@@ -22,12 +22,8 @@ MSG: tracking/Tracklet
 # Tracklet.msg
 ## Bounding box with class
 
-# Constants
-
-# TODO
-# uint8 car
-# uint8 armor_module
-# ...
+# ID
+uint8 id
 
 # Bounding box
 float32 x
@@ -36,9 +32,9 @@ float32 w
 float32 h
 
 # class
-uint8 cls
+uint8 clss
 
-float32 confidence"""
+float32 score"""
   __slots__ = ['tracklets']
   _slot_types = ['tracking/Tracklet[]']
 
@@ -80,7 +76,7 @@ float32 confidence"""
       buff.write(_struct_I.pack(length))
       for val1 in self.tracklets:
         _x = val1
-        buff.write(_get_struct_4fBf().pack(_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence))
+        buff.write(_get_struct_B4fBf().pack(_x.id, _x.x, _x.y, _x.w, _x.h, _x.clss, _x.score))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -103,8 +99,8 @@ float32 confidence"""
         val1 = tracking.msg.Tracklet()
         _x = val1
         start = end
-        end += 21
-        (_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence,) = _get_struct_4fBf().unpack(str[start:end])
+        end += 22
+        (_x.id, _x.x, _x.y, _x.w, _x.h, _x.clss, _x.score,) = _get_struct_B4fBf().unpack(str[start:end])
         self.tracklets.append(val1)
       return self
     except struct.error as e:
@@ -122,7 +118,7 @@ float32 confidence"""
       buff.write(_struct_I.pack(length))
       for val1 in self.tracklets:
         _x = val1
-        buff.write(_get_struct_4fBf().pack(_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence))
+        buff.write(_get_struct_B4fBf().pack(_x.id, _x.x, _x.y, _x.w, _x.h, _x.clss, _x.score))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -146,8 +142,8 @@ float32 confidence"""
         val1 = tracking.msg.Tracklet()
         _x = val1
         start = end
-        end += 21
-        (_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence,) = _get_struct_4fBf().unpack(str[start:end])
+        end += 22
+        (_x.id, _x.x, _x.y, _x.w, _x.h, _x.clss, _x.score,) = _get_struct_B4fBf().unpack(str[start:end])
         self.tracklets.append(val1)
       return self
     except struct.error as e:
@@ -157,9 +153,9 @@ _struct_I = genpy.struct_I
 def _get_struct_I():
     global _struct_I
     return _struct_I
-_struct_4fBf = None
-def _get_struct_4fBf():
-    global _struct_4fBf
-    if _struct_4fBf is None:
-        _struct_4fBf = struct.Struct("<4fBf")
-    return _struct_4fBf
+_struct_B4fBf = None
+def _get_struct_B4fBf():
+    global _struct_B4fBf
+    if _struct_B4fBf is None:
+        _struct_B4fBf = struct.Struct("<B4fBf")
+    return _struct_B4fBf

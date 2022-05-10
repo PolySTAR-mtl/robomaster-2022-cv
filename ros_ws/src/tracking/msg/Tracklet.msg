@@ -1,12 +1,8 @@
 # Tracklet.msg
 ## Bounding box with class
 
-# Constants
-
-# TODO
-# uint8 car
-# uint8 armor_module
-# ...
+# ID
+string id
 
 # Bounding box
 float32 x
@@ -15,6 +11,6 @@ float32 w
 float32 h
 
 # class
-uint8 cls
+uint8 clss
 
-float32 confidence
+float32 score

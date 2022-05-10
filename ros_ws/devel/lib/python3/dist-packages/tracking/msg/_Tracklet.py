@@ -8,18 +8,14 @@ import struct
 
 
 class Tracklet(genpy.Message):
-  _md5sum = "b6ef12160302895f4532528b12bd7ec3"
+  _md5sum = "59fcd37fcd586a2228c557986fc973a2"
   _type = "tracking/Tracklet"
   _has_header = False  # flag to mark the presence of a Header object
   _full_text = """# Tracklet.msg
 ## Bounding box with class
 
-# Constants
-
-# TODO
-# uint8 car
-# uint8 armor_module
-# ...
+# ID
+uint8 id
 
 # Bounding box
 float32 x
@@ -28,11 +24,11 @@ float32 w
 float32 h
 
 # class
-uint8 cls
+uint8 clss
 
-float32 confidence"""
-  __slots__ = ['x','y','w','h','cls','confidence']
-  _slot_types = ['float32','float32','float32','float32','uint8','float32']
+float32 score"""
+  __slots__ = ['id','x','y','w','h','clss','score']
+  _slot_types = ['uint8','float32','float32','float32','float32','uint8','float32']
 
   def __init__(self, *args, **kwds):
     """
@@ -42,7 +38,7 @@ float32 confidence"""
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       x,y,w,h,cls,confidence
+       id,x,y,w,h,clss,score
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -51,6 +47,8 @@ float32 confidence"""
     if args or kwds:
       super(Tracklet, self).__init__(*args, **kwds)
       # message fields cannot be None, assign default values for those that are
+      if self.id is None:
+        self.id = 0
       if self.x is None:
         self.x = 0.
       if self.y is None:
@@ -59,17 +57,18 @@ float32 confidence"""
         self.w = 0.
       if self.h is None:
         self.h = 0.
-      if self.cls is None:
-        self.cls = 0
-      if self.confidence is None:
-        self.confidence = 0.
+      if self.clss is None:
+        self.clss = 0
+      if self.score is None:
+        self.score = 0.
     else:
+      self.id = 0
       self.x = 0.
       self.y = 0.
       self.w = 0.
       self.h = 0.
-      self.cls = 0
-      self.confidence = 0.
+      self.clss = 0
+      self.score = 0.
 
   def _get_types(self):
     """
@@ -84,7 +83,7 @@ float32 confidence"""
     """
     try:
       _x = self
-      buff.write(_get_struct_4fBf().pack(_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence))
+      buff.write(_get_struct_B4fBf().pack(_x.id, _x.x, _x.y, _x.w, _x.h, _x.clss, _x.score))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -99,8 +98,8 @@ float32 confidence"""
       end = 0
       _x = self
       start = end
-      end += 21
-      (_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence,) = _get_struct_4fBf().unpack(str[start:end])
+      end += 22
+      (_x.id, _x.x, _x.y, _x.w, _x.h, _x.clss, _x.score,) = _get_struct_B4fBf().unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e)  # most likely buffer underfill
@@ -114,7 +113,7 @@ float32 confidence"""
     """
     try:
       _x = self
-      buff.write(_get_struct_4fBf().pack(_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence))
+      buff.write(_get_struct_B4fBf().pack(_x.id, _x.x, _x.y, _x.w, _x.h, _x.clss, _x.score))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -130,8 +129,8 @@ float32 confidence"""
       end = 0
       _x = self
       start = end
-      end += 21
-      (_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence,) = _get_struct_4fBf().unpack(str[start:end])
+      end += 22
+      (_x.id, _x.x, _x.y, _x.w, _x.h, _x.clss, _x.score,) = _get_struct_B4fBf().unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e)  # most likely buffer underfill
@@ -140,9 +139,9 @@ _struct_I = genpy.struct_I
 def _get_struct_I():
     global _struct_I
     return _struct_I
-_struct_4fBf = None
-def _get_struct_4fBf():
-    global _struct_4fBf
-    if _struct_4fBf is None:
-        _struct_4fBf = struct.Struct("<4fBf")
-    return _struct_4fBf
+_struct_B4fBf = None
+def _get_struct_B4fBf():
+    global _struct_B4fBf
+    if _struct_B4fBf is None:
+        _struct_B4fBf = struct.Struct("<B4fBf")
+    return _struct_B4fBf

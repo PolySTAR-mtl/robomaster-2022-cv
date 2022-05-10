@@ -8,6 +8,6 @@ float32 w
 float32 h
 
 # class
-uint8 cls
+uint8 clss
 
-float32 confidence
+float32 score

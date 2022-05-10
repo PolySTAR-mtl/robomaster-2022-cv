@@ -58,7 +58,7 @@ class Tracklets {
 
   static getMessageSize(object) {
     let length = 0;
-    length += 21 * object.tracklets.length;
+    length += 22 * object.tracklets.length;
     return length + 4;
   }
 
@@ -69,7 +69,7 @@ class Tracklets {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return 'eaf004b7dd6cb035732a86956a387ae0';
+    return '09e49bce30706a9a7b107c52941becdc';
   }
 
   static messageDefinition() {
@@ -85,12 +85,8 @@ class Tracklets {
     # Tracklet.msg
     ## Bounding box with class
     
-    # Constants
-    
-    # TODO
-    # uint8 car
-    # uint8 armor_module
-    # ...
+    # ID
+    uint8 id
     
     # Bounding box
     float32 x
@@ -99,9 +95,9 @@ class Tracklets {
     float32 h
     
     # class
-    uint8 cls
+    uint8 clss
     
-    float32 confidence
+    float32 score
     `;
   }
 

@@ -58,16 +58,16 @@
   "tracking/Tracklets")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<Tracklets>)))
   "Returns md5sum for a message object of type '<Tracklets>"
-  "eaf004b7dd6cb035732a86956a387ae0")
+  "09e49bce30706a9a7b107c52941becdc")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'Tracklets)))
   "Returns md5sum for a message object of type 'Tracklets"
-  "eaf004b7dd6cb035732a86956a387ae0")
+  "09e49bce30706a9a7b107c52941becdc")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<Tracklets>)))
   "Returns full string definition for message of type '<Tracklets>"
-  (cl:format cl:nil "# Tracklets.msg~%## List of tracked bounding boxes~%~%# Header header~%Tracklet[] tracklets~%================================================================================~%MSG: tracking/Tracklet~%# Tracklet.msg~%## Bounding box with class~%~%# Constants~%~%# TODO~%# uint8 car~%# uint8 armor_module~%# ...~%~%# Bounding box~%float32 x~%float32 y~%float32 w~%float32 h~%~%# class~%uint8 cls~%~%float32 confidence~%~%"))
+  (cl:format cl:nil "# Tracklets.msg~%## List of tracked bounding boxes~%~%# Header header~%Tracklet[] tracklets~%================================================================================~%MSG: tracking/Tracklet~%# Tracklet.msg~%## Bounding box with class~%~%# ID~%uint8 id~%~%# Bounding box~%float32 x~%float32 y~%float32 w~%float32 h~%~%# class~%uint8 clss~%~%float32 score~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'Tracklets)))
   "Returns full string definition for message of type 'Tracklets"
-  (cl:format cl:nil "# Tracklets.msg~%## List of tracked bounding boxes~%~%# Header header~%Tracklet[] tracklets~%================================================================================~%MSG: tracking/Tracklet~%# Tracklet.msg~%## Bounding box with class~%~%# Constants~%~%# TODO~%# uint8 car~%# uint8 armor_module~%# ...~%~%# Bounding box~%float32 x~%float32 y~%float32 w~%float32 h~%~%# class~%uint8 cls~%~%float32 confidence~%~%"))
+  (cl:format cl:nil "# Tracklets.msg~%## List of tracked bounding boxes~%~%# Header header~%Tracklet[] tracklets~%================================================================================~%MSG: tracking/Tracklet~%# Tracklet.msg~%## Bounding box with class~%~%# ID~%uint8 id~%~%# Bounding box~%float32 x~%float32 y~%float32 w~%float32 h~%~%# class~%uint8 clss~%~%float32 score~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <Tracklets>))
   (cl:+ 0
      4 (cl:reduce #'cl:+ (cl:slot-value msg 'tracklets) :key #'(cl:lambda (ele) (cl:declare (cl:ignorable ele)) (cl:+ (roslisp-msg-protocol:serialization-length ele))))

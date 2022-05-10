@@ -18,14 +18,21 @@ class Tracklet {
   constructor(initObj={}) {
     if (initObj === null) {
       // initObj === null is a special case for deserialization where we don't initialize fields
+      this.id = null;
       this.x = null;
       this.y = null;
       this.w = null;
       this.h = null;
-      this.cls = null;
-      this.confidence = null;
+      this.clss = null;
+      this.score = null;
     }
     else {
+      if (initObj.hasOwnProperty('id')) {
+        this.id = initObj.id
+      }
+      else {
+        this.id = 0;
+      }
       if (initObj.hasOwnProperty('x')) {
         this.x = initObj.x
       }
@@ -50,23 +57,25 @@ class Tracklet {
       else {
         this.h = 0.0;
       }
-      if (initObj.hasOwnProperty('cls')) {
-        this.cls = initObj.cls
+      if (initObj.hasOwnProperty('clss')) {
+        this.clss = initObj.clss
       }
       else {
-        this.cls = 0;
+        this.clss = 0;
       }
-      if (initObj.hasOwnProperty('confidence')) {
-        this.confidence = initObj.confidence
+      if (initObj.hasOwnProperty('score')) {
+        this.score = initObj.score
       }
       else {
-        this.confidence = 0.0;
+        this.score = 0.0;
       }
     }
   }
 
   static serialize(obj, buffer, bufferOffset) {
     // Serializes a message object of type Tracklet
+    // Serialize message field [id]
+    bufferOffset = _serializer.uint8(obj.id, buffer, bufferOffset);
     // Serialize message field [x]
     bufferOffset = _serializer.float32(obj.x, buffer, bufferOffset);
     // Serialize message field [y]
@@ -75,10 +84,10 @@ class Tracklet {
     bufferOffset = _serializer.float32(obj.w, buffer, bufferOffset);
     // Serialize message field [h]
     bufferOffset = _serializer.float32(obj.h, buffer, bufferOffset);
-    // Serialize message field [cls]
-    bufferOffset = _serializer.uint8(obj.cls, buffer, bufferOffset);
-    // Serialize message field [confidence]
-    bufferOffset = _serializer.float32(obj.confidence, buffer, bufferOffset);
+    // Serialize message field [clss]
+    bufferOffset = _serializer.uint8(obj.clss, buffer, bufferOffset);
+    // Serialize message field [score]
+    bufferOffset = _serializer.float32(obj.score, buffer, bufferOffset);
     return bufferOffset;
   }
 
@@ -86,6 +95,8 @@ class Tracklet {
     //deserializes a message object of type Tracklet
     let len;
     let data = new Tracklet(null);
+    // Deserialize message field [id]
+    data.id = _deserializer.uint8(buffer, bufferOffset);
     // Deserialize message field [x]
     data.x = _deserializer.float32(buffer, bufferOffset);
     // Deserialize message field [y]
@@ -94,15 +105,15 @@ class Tracklet {
     data.w = _deserializer.float32(buffer, bufferOffset);
     // Deserialize message field [h]
     data.h = _deserializer.float32(buffer, bufferOffset);
-    // Deserialize message field [cls]
-    data.cls = _deserializer.uint8(buffer, bufferOffset);
-    // Deserialize message field [confidence]
-    data.confidence = _deserializer.float32(buffer, bufferOffset);
+    // Deserialize message field [clss]
+    data.clss = _deserializer.uint8(buffer, bufferOffset);
+    // Deserialize message field [score]
+    data.score = _deserializer.float32(buffer, bufferOffset);
     return data;
   }
 
   static getMessageSize(object) {
-    return 21;
+    return 22;
   }
 
   static datatype() {
@@ -112,7 +123,7 @@ class Tracklet {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return 'b6ef12160302895f4532528b12bd7ec3';
+    return '59fcd37fcd586a2228c557986fc973a2';
   }
 
   static messageDefinition() {
@@ -121,12 +132,8 @@ class Tracklet {
     # Tracklet.msg
     ## Bounding box with class
     
-    # Constants
-    
-    # TODO
-    # uint8 car
-    # uint8 armor_module
-    # ...
+    # ID
+    uint8 id
     
     # Bounding box
     float32 x
@@ -135,9 +142,9 @@ class Tracklet {
     float32 h
     
     # class
-    uint8 cls
+    uint8 clss
     
-    float32 confidence
+    float32 score
     `;
   }
 
@@ -147,6 +154,13 @@ class Tracklet {
       msg = {};
     }
     const resolved = new Tracklet(null);
+    if (msg.id !== undefined) {
+      resolved.id = msg.id;
+    }
+    else {
+      resolved.id = 0
+    }
+
     if (msg.x !== undefined) {
       resolved.x = msg.x;
     }
@@ -175,18 +189,18 @@ class Tracklet {
       resolved.h = 0.0
     }
 
-    if (msg.cls !== undefined) {
-      resolved.cls = msg.cls;
+    if (msg.clss !== undefined) {
+      resolved.clss = msg.clss;
     }
     else {
-      resolved.cls = 0
+      resolved.clss = 0
     }
 
-    if (msg.confidence !== undefined) {
-      resolved.confidence = msg.confidence;
+    if (msg.score !== undefined) {
+      resolved.score = msg.score;
     }
     else {
-      resolved.confidence = 0.0
+      resolved.score = 0.0
     }
 
     return resolved;

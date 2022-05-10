@@ -123,12 +123,12 @@ struct MD5Sum< ::tracking::Tracklets_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "eaf004b7dd6cb035732a86956a387ae0";
+    return "09e49bce30706a9a7b107c52941becdc";
   }
 
   static const char* value(const ::tracking::Tracklets_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xeaf004b7dd6cb035ULL;
-  static const uint64_t static_value2 = 0x732a86956a387ae0ULL;
+  static const uint64_t static_value1 = 0x09e49bce30706a9aULL;
+  static const uint64_t static_value2 = 0x7b107c52941becdcULL;
 };
 
 template<class ContainerAllocator>
@@ -157,12 +157,8 @@ struct Definition< ::tracking::Tracklets_<ContainerAllocator> >
 "# Tracklet.msg\n"
 "## Bounding box with class\n"
 "\n"
-"# Constants\n"
-"\n"
-"# TODO\n"
-"# uint8 car\n"
-"# uint8 armor_module\n"
-"# ...\n"
+"# ID\n"
+"uint8 id\n"
 "\n"
 "# Bounding box\n"
 "float32 x\n"
@@ -171,9 +167,9 @@ struct Definition< ::tracking::Tracklets_<ContainerAllocator> >
 "float32 h\n"
 "\n"
 "# class\n"
-"uint8 cls\n"
+"uint8 clss\n"
 "\n"
-"float32 confidence\n"
+"float32 score\n"
 ;
   }
 

@@ -61,7 +61,7 @@
    self)
   )
 
-(setf (get tracking::Tracklets :md5sum-) "eaf004b7dd6cb035732a86956a387ae0")
+(setf (get tracking::Tracklets :md5sum-) "09e49bce30706a9a7b107c52941becdc")
 (setf (get tracking::Tracklets :datatype-) "tracking/Tracklets")
 (setf (get tracking::Tracklets :definition-)
       "# Tracklets.msg
@@ -74,12 +74,8 @@ MSG: tracking/Tracklet
 # Tracklet.msg
 ## Bounding box with class
 
-# Constants
-
-# TODO
-# uint8 car
-# uint8 armor_module
-# ...
+# ID
+uint8 id
 
 # Bounding box
 float32 x
@@ -88,13 +84,13 @@ float32 w
 float32 h
 
 # class
-uint8 cls
+uint8 clss
 
-float32 confidence
+float32 score
 ")
 
 
 
-(provide :tracking/Tracklets "eaf004b7dd6cb035732a86956a387ae0")
+(provide :tracking/Tracklets "09e49bce30706a9a7b107c52941becdc")
 
 

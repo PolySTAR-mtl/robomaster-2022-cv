@@ -24,24 +24,29 @@ struct Tracklet_
   typedef Tracklet_<ContainerAllocator> Type;
 
   Tracklet_()
-    : x(0.0)
+    : id(0)
+    , x(0.0)
     , y(0.0)
     , w(0.0)
     , h(0.0)
-    , cls(0)
-    , confidence(0.0)  {
+    , clss(0)
+    , score(0.0)  {
     }
   Tracklet_(const ContainerAllocator& _alloc)
-    : x(0.0)
+    : id(0)
+    , x(0.0)
     , y(0.0)
     , w(0.0)
     , h(0.0)
-    , cls(0)
-    , confidence(0.0)  {
+    , clss(0)
+    , score(0.0)  {
   (void)_alloc;
     }
 
 
+
+   typedef uint8_t _id_type;
+  _id_type id;
 
    typedef float _x_type;
   _x_type x;
@@ -55,11 +60,11 @@ struct Tracklet_
    typedef float _h_type;
   _h_type h;
 
-   typedef uint8_t _cls_type;
-  _cls_type cls;
+   typedef uint8_t _clss_type;
+  _clss_type clss;
 
-   typedef float _confidence_type;
-  _confidence_type confidence;
+   typedef float _score_type;
+  _score_type score;
 
 
 
@@ -90,12 +95,13 @@ return s;
 template<typename ContainerAllocator1, typename ContainerAllocator2>
 bool operator==(const ::tracking::Tracklet_<ContainerAllocator1> & lhs, const ::tracking::Tracklet_<ContainerAllocator2> & rhs)
 {
-  return lhs.x == rhs.x &&
+  return lhs.id == rhs.id &&
+    lhs.x == rhs.x &&
     lhs.y == rhs.y &&
     lhs.w == rhs.w &&
     lhs.h == rhs.h &&
-    lhs.cls == rhs.cls &&
-    lhs.confidence == rhs.confidence;
+    lhs.clss == rhs.clss &&
+    lhs.score == rhs.score;
 }
 
 template<typename ContainerAllocator1, typename ContainerAllocator2>
@@ -152,12 +158,12 @@ struct MD5Sum< ::tracking::Tracklet_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "b6ef12160302895f4532528b12bd7ec3";
+    return "59fcd37fcd586a2228c557986fc973a2";
   }
 
   static const char* value(const ::tracking::Tracklet_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xb6ef12160302895fULL;
-  static const uint64_t static_value2 = 0x4532528b12bd7ec3ULL;
+  static const uint64_t static_value1 = 0x59fcd37fcd586a22ULL;
+  static const uint64_t static_value2 = 0x28c557986fc973a2ULL;
 };
 
 template<class ContainerAllocator>
@@ -179,12 +185,8 @@ struct Definition< ::tracking::Tracklet_<ContainerAllocator> >
     return "# Tracklet.msg\n"
 "## Bounding box with class\n"
 "\n"
-"# Constants\n"
-"\n"
-"# TODO\n"
-"# uint8 car\n"
-"# uint8 armor_module\n"
-"# ...\n"
+"# ID\n"
+"uint8 id\n"
 "\n"
 "# Bounding box\n"
 "float32 x\n"
@@ -193,9 +195,9 @@ struct Definition< ::tracking::Tracklet_<ContainerAllocator> >
 "float32 h\n"
 "\n"
 "# class\n"
-"uint8 cls\n"
+"uint8 clss\n"
 "\n"
-"float32 confidence\n"
+"float32 score\n"
 ;
   }
 
@@ -214,12 +216,13 @@ namespace serialization
   {
     template<typename Stream, typename T> inline static void allInOne(Stream& stream, T m)
     {
+      stream.next(m.id);
       stream.next(m.x);
       stream.next(m.y);
       stream.next(m.w);
       stream.next(m.h);
-      stream.next(m.cls);
-      stream.next(m.confidence);
+      stream.next(m.clss);
+      stream.next(m.score);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -238,6 +241,8 @@ struct Printer< ::tracking::Tracklet_<ContainerAllocator> >
 {
   template<typename Stream> static void stream(Stream& s, const std::string& indent, const ::tracking::Tracklet_<ContainerAllocator>& v)
   {
+    s << indent << "id: ";
+    Printer<uint8_t>::stream(s, indent + "  ", v.id);
     s << indent << "x: ";
     Printer<float>::stream(s, indent + "  ", v.x);
     s << indent << "y: ";
@@ -246,10 +251,10 @@ struct Printer< ::tracking::Tracklet_<ContainerAllocator> >
     Printer<float>::stream(s, indent + "  ", v.w);
     s << indent << "h: ";
     Printer<float>::stream(s, indent + "  ", v.h);
-    s << indent << "cls: ";
-    Printer<uint8_t>::stream(s, indent + "  ", v.cls);
-    s << indent << "confidence: ";
-    Printer<float>::stream(s, indent + "  ", v.confidence);
+    s << indent << "clss: ";
+    Printer<uint8_t>::stream(s, indent + "  ", v.clss);
+    s << indent << "score: ";
+    Printer<float>::stream(s, indent + "  ", v.score);
   }
 };
 

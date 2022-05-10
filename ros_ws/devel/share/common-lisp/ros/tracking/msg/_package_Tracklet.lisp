@@ -1,5 +1,7 @@
 (cl:in-package tracking-msg)
-(cl:export '(X-VAL
+(cl:export '(ID-VAL
+          ID
+          X-VAL
           X
           Y-VAL
           Y
@@ -7,8 +9,8 @@
           W
           H-VAL
           H
-          CLS-VAL
-          CLS
-          CONFIDENCE-VAL
-          CONFIDENCE
+          CLSS-VAL
+          CLSS
+          SCORE-VAL
+          SCORE
 ))

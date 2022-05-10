@@ -28,16 +28,16 @@ struct Detection_
     , y(0.0)
     , w(0.0)
     , h(0.0)
-    , cls(0)
-    , confidence(0.0)  {
+    , clss(0)
+    , score(0.0)  {
     }
   Detection_(const ContainerAllocator& _alloc)
     : x(0.0)
     , y(0.0)
     , w(0.0)
     , h(0.0)
-    , cls(0)
-    , confidence(0.0)  {
+    , clss(0)
+    , score(0.0)  {
   (void)_alloc;
     }
 
@@ -55,11 +55,11 @@ struct Detection_
    typedef float _h_type;
   _h_type h;
 
-   typedef uint8_t _cls_type;
-  _cls_type cls;
+   typedef uint8_t _clss_type;
+  _clss_type clss;
 
-   typedef float _confidence_type;
-  _confidence_type confidence;
+   typedef float _score_type;
+  _score_type score;
 
 
 
@@ -94,8 +94,8 @@ bool operator==(const ::detection::Detection_<ContainerAllocator1> & lhs, const 
     lhs.y == rhs.y &&
     lhs.w == rhs.w &&
     lhs.h == rhs.h &&
-    lhs.cls == rhs.cls &&
-    lhs.confidence == rhs.confidence;
+    lhs.clss == rhs.clss &&
+    lhs.score == rhs.score;
 }
 
 template<typename ContainerAllocator1, typename ContainerAllocator2>
@@ -152,12 +152,12 @@ struct MD5Sum< ::detection::Detection_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "b6ef12160302895f4532528b12bd7ec3";
+    return "605d6371c30b664ec10c76dcf5a9542d";
   }
 
   static const char* value(const ::detection::Detection_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xb6ef12160302895fULL;
-  static const uint64_t static_value2 = 0x4532528b12bd7ec3ULL;
+  static const uint64_t static_value1 = 0x605d6371c30b664eULL;
+  static const uint64_t static_value2 = 0xc10c76dcf5a9542dULL;
 };
 
 template<class ContainerAllocator>
@@ -179,13 +179,6 @@ struct Definition< ::detection::Detection_<ContainerAllocator> >
     return "# Detection.msg\n"
 "## Bounding box with class and confidence\n"
 "\n"
-"# Constants\n"
-"\n"
-"# TODO\n"
-"# uint8 car\n"
-"# uint8 armor_module\n"
-"# ...\n"
-"\n"
 "# Bounding box\n"
 "float32 x\n"
 "float32 y\n"
@@ -193,9 +186,9 @@ struct Definition< ::detection::Detection_<ContainerAllocator> >
 "float32 h\n"
 "\n"
 "# class\n"
-"uint8 cls\n"
+"uint8 clss\n"
 "\n"
-"float32 confidence\n"
+"float32 score\n"
 ;
   }
 
@@ -218,8 +211,8 @@ namespace serialization
       stream.next(m.y);
       stream.next(m.w);
       stream.next(m.h);
-      stream.next(m.cls);
-      stream.next(m.confidence);
+      stream.next(m.clss);
+      stream.next(m.score);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -246,10 +239,10 @@ struct Printer< ::detection::Detection_<ContainerAllocator> >
     Printer<float>::stream(s, indent + "  ", v.w);
     s << indent << "h: ";
     Printer<float>::stream(s, indent + "  ", v.h);
-    s << indent << "cls: ";
-    Printer<uint8_t>::stream(s, indent + "  ", v.cls);
-    s << indent << "confidence: ";
-    Printer<float>::stream(s, indent + "  ", v.confidence);
+    s << indent << "clss: ";
+    Printer<uint8_t>::stream(s, indent + "  ", v.clss);
+    s << indent << "score: ";
+    Printer<float>::stream(s, indent + "  ", v.score);
   }
 };
 

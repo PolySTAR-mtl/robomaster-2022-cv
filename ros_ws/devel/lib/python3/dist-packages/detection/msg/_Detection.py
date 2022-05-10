@@ -8,18 +8,11 @@ import struct
 
 
 class Detection(genpy.Message):
-  _md5sum = "b6ef12160302895f4532528b12bd7ec3"
+  _md5sum = "605d6371c30b664ec10c76dcf5a9542d"
   _type = "detection/Detection"
   _has_header = False  # flag to mark the presence of a Header object
   _full_text = """# Detection.msg
 ## Bounding box with class and confidence
-
-# Constants
-
-# TODO
-# uint8 car
-# uint8 armor_module
-# ...
 
 # Bounding box
 float32 x
@@ -28,10 +21,10 @@ float32 w
 float32 h
 
 # class
-uint8 cls
+uint8 clss
 
-float32 confidence"""
-  __slots__ = ['x','y','w','h','cls','confidence']
+float32 score"""
+  __slots__ = ['x','y','w','h','clss','score']
   _slot_types = ['float32','float32','float32','float32','uint8','float32']
 
   def __init__(self, *args, **kwds):
@@ -42,7 +35,7 @@ float32 confidence"""
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       x,y,w,h,cls,confidence
+       x,y,w,h,clss,score
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -59,17 +52,17 @@ float32 confidence"""
         self.w = 0.
       if self.h is None:
         self.h = 0.
-      if self.cls is None:
-        self.cls = 0
-      if self.confidence is None:
-        self.confidence = 0.
+      if self.clss is None:
+        self.clss = 0
+      if self.score is None:
+        self.score = 0.
     else:
       self.x = 0.
       self.y = 0.
       self.w = 0.
       self.h = 0.
-      self.cls = 0
-      self.confidence = 0.
+      self.clss = 0
+      self.score = 0.
 
   def _get_types(self):
     """
@@ -84,7 +77,7 @@ float32 confidence"""
     """
     try:
       _x = self
-      buff.write(_get_struct_4fBf().pack(_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence))
+      buff.write(_get_struct_4fBf().pack(_x.x, _x.y, _x.w, _x.h, _x.clss, _x.score))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -100,7 +93,7 @@ float32 confidence"""
       _x = self
       start = end
       end += 21
-      (_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence,) = _get_struct_4fBf().unpack(str[start:end])
+      (_x.x, _x.y, _x.w, _x.h, _x.clss, _x.score,) = _get_struct_4fBf().unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e)  # most likely buffer underfill
@@ -114,7 +107,7 @@ float32 confidence"""
     """
     try:
       _x = self
-      buff.write(_get_struct_4fBf().pack(_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence))
+      buff.write(_get_struct_4fBf().pack(_x.x, _x.y, _x.w, _x.h, _x.clss, _x.score))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -131,7 +124,7 @@ float32 confidence"""
       _x = self
       start = end
       end += 21
-      (_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence,) = _get_struct_4fBf().unpack(str[start:end])
+      (_x.x, _x.y, _x.w, _x.h, _x.clss, _x.score,) = _get_struct_4fBf().unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e)  # most likely buffer underfill

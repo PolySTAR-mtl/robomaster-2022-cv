@@ -25,12 +25,10 @@ struct Detections_
   typedef Detections_<ContainerAllocator> Type;
 
   Detections_()
-    : detections()
-    , timelapse(0)  {
+    : detections()  {
     }
   Detections_(const ContainerAllocator& _alloc)
-    : detections(_alloc)
-    , timelapse(0)  {
+    : detections(_alloc)  {
   (void)_alloc;
     }
 
@@ -38,9 +36,6 @@ struct Detections_
 
    typedef std::vector< ::detection::Detection_<ContainerAllocator> , typename ContainerAllocator::template rebind< ::detection::Detection_<ContainerAllocator> >::other >  _detections_type;
   _detections_type detections;
-
-   typedef uint32_t _timelapse_type;
-  _timelapse_type timelapse;
 
 
 
@@ -71,8 +66,7 @@ return s;
 template<typename ContainerAllocator1, typename ContainerAllocator2>
 bool operator==(const ::detection::Detections_<ContainerAllocator1> & lhs, const ::detection::Detections_<ContainerAllocator2> & rhs)
 {
-  return lhs.detections == rhs.detections &&
-    lhs.timelapse == rhs.timelapse;
+  return lhs.detections == rhs.detections;
 }
 
 template<typename ContainerAllocator1, typename ContainerAllocator2>
@@ -129,12 +123,12 @@ struct MD5Sum< ::detection::Detections_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "5a80ac5cf722ceea32bf50e93318cacc";
+    return "cafb60d89a040a540def8d31f5cdc037";
   }
 
   static const char* value(const ::detection::Detections_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x5a80ac5cf722ceeaULL;
-  static const uint64_t static_value2 = 0x32bf50e93318caccULL;
+  static const uint64_t static_value1 = 0xcafb60d89a040a54ULL;
+  static const uint64_t static_value2 = 0x0def8d31f5cdc037ULL;
 };
 
 template<class ContainerAllocator>
@@ -158,19 +152,10 @@ struct Definition< ::detection::Detections_<ContainerAllocator> >
 "\n"
 "# Header header\n"
 "Detection[] detections\n"
-"\n"
-"uint32 timelapse\n"
 "================================================================================\n"
 "MSG: detection/Detection\n"
 "# Detection.msg\n"
 "## Bounding box with class and confidence\n"
-"\n"
-"# Constants\n"
-"\n"
-"# TODO\n"
-"# uint8 car\n"
-"# uint8 armor_module\n"
-"# ...\n"
 "\n"
 "# Bounding box\n"
 "float32 x\n"
@@ -179,9 +164,9 @@ struct Definition< ::detection::Detections_<ContainerAllocator> >
 "float32 h\n"
 "\n"
 "# class\n"
-"uint8 cls\n"
+"uint8 clss\n"
 "\n"
-"float32 confidence\n"
+"float32 score\n"
 ;
   }
 
@@ -201,7 +186,6 @@ namespace serialization
     template<typename Stream, typename T> inline static void allInOne(Stream& stream, T m)
     {
       stream.next(m.detections);
-      stream.next(m.timelapse);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -228,8 +212,6 @@ struct Printer< ::detection::Detections_<ContainerAllocator> >
       s << indent;
       Printer< ::detection::Detection_<ContainerAllocator> >::stream(s, indent + "    ", v.detections[i]);
     }
-    s << indent << "timelapse: ";
-    Printer<uint32_t>::stream(s, indent + "  ", v.timelapse);
   }
 };
 

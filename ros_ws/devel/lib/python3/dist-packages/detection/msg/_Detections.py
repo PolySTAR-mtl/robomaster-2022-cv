@@ -9,7 +9,7 @@ import struct
 import detection.msg
 
 class Detections(genpy.Message):
-  _md5sum = "5a80ac5cf722ceea32bf50e93318cacc"
+  _md5sum = "cafb60d89a040a540def8d31f5cdc037"
   _type = "detection/Detections"
   _has_header = False  # flag to mark the presence of a Header object
   _full_text = """# Detections.msg
@@ -17,19 +17,10 @@ class Detections(genpy.Message):
 
 # Header header
 Detection[] detections
-
-uint32 timelapse
 ================================================================================
 MSG: detection/Detection
 # Detection.msg
 ## Bounding box with class and confidence
-
-# Constants
-
-# TODO
-# uint8 car
-# uint8 armor_module
-# ...
 
 # Bounding box
 float32 x
@@ -38,11 +29,11 @@ float32 w
 float32 h
 
 # class
-uint8 cls
+uint8 clss
 
-float32 confidence"""
-  __slots__ = ['detections','timelapse']
-  _slot_types = ['detection/Detection[]','uint32']
+float32 score"""
+  __slots__ = ['detections']
+  _slot_types = ['detection/Detection[]']
 
   def __init__(self, *args, **kwds):
     """
@@ -52,7 +43,7 @@ float32 confidence"""
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       detections,timelapse
+       detections
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -63,11 +54,8 @@ float32 confidence"""
       # message fields cannot be None, assign default values for those that are
       if self.detections is None:
         self.detections = []
-      if self.timelapse is None:
-        self.timelapse = 0
     else:
       self.detections = []
-      self.timelapse = 0
 
   def _get_types(self):
     """
@@ -85,9 +73,7 @@ float32 confidence"""
       buff.write(_struct_I.pack(length))
       for val1 in self.detections:
         _x = val1
-        buff.write(_get_struct_4fBf().pack(_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence))
-      _x = self.timelapse
-      buff.write(_get_struct_I().pack(_x))
+        buff.write(_get_struct_4fBf().pack(_x.x, _x.y, _x.w, _x.h, _x.clss, _x.score))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -111,11 +97,8 @@ float32 confidence"""
         _x = val1
         start = end
         end += 21
-        (_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence,) = _get_struct_4fBf().unpack(str[start:end])
+        (_x.x, _x.y, _x.w, _x.h, _x.clss, _x.score,) = _get_struct_4fBf().unpack(str[start:end])
         self.detections.append(val1)
-      start = end
-      end += 4
-      (self.timelapse,) = _get_struct_I().unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e)  # most likely buffer underfill
@@ -132,9 +115,7 @@ float32 confidence"""
       buff.write(_struct_I.pack(length))
       for val1 in self.detections:
         _x = val1
-        buff.write(_get_struct_4fBf().pack(_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence))
-      _x = self.timelapse
-      buff.write(_get_struct_I().pack(_x))
+        buff.write(_get_struct_4fBf().pack(_x.x, _x.y, _x.w, _x.h, _x.clss, _x.score))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -159,11 +140,8 @@ float32 confidence"""
         _x = val1
         start = end
         end += 21
-        (_x.x, _x.y, _x.w, _x.h, _x.cls, _x.confidence,) = _get_struct_4fBf().unpack(str[start:end])
+        (_x.x, _x.y, _x.w, _x.h, _x.clss, _x.score,) = _get_struct_4fBf().unpack(str[start:end])
         self.detections.append(val1)
-      start = end
-      end += 4
-      (self.timelapse,) = _get_struct_I().unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e)  # most likely buffer underfill

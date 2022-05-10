@@ -14,7 +14,7 @@
 
 (defclass detection::Detection
   :super ros::object
-  :slots (_x _y _w _h _cls _confidence ))
+  :slots (_x _y _w _h _clss _score ))
 
 (defmethod detection::Detection
   (:init
@@ -23,16 +23,16 @@
     ((:y __y) 0.0)
     ((:w __w) 0.0)
     ((:h __h) 0.0)
-    ((:cls __cls) 0)
-    ((:confidence __confidence) 0.0)
+    ((:clss __clss) 0)
+    ((:score __score) 0.0)
     )
    (send-super :init)
    (setq _x (float __x))
    (setq _y (float __y))
    (setq _w (float __w))
    (setq _h (float __h))
-   (setq _cls (round __cls))
-   (setq _confidence (float __confidence))
+   (setq _clss (round __clss))
+   (setq _score (float __score))
    self)
   (:x
    (&optional __x)
@@ -46,12 +46,12 @@
   (:h
    (&optional __h)
    (if __h (setq _h __h)) _h)
-  (:cls
-   (&optional __cls)
-   (if __cls (setq _cls __cls)) _cls)
-  (:confidence
-   (&optional __confidence)
-   (if __confidence (setq _confidence __confidence)) _confidence)
+  (:clss
+   (&optional __clss)
+   (if __clss (setq _clss __clss)) _clss)
+  (:score
+   (&optional __score)
+   (if __score (setq _score __score)) _score)
   (:serialization-length
    ()
    (+
@@ -63,9 +63,9 @@
     4
     ;; float32 _h
     4
-    ;; uint8 _cls
+    ;; uint8 _clss
     1
-    ;; float32 _confidence
+    ;; float32 _score
     4
     ))
   (:serialize
@@ -80,10 +80,10 @@
        (sys::poke _w (send s :buffer) (send s :count) :float) (incf (stream-count s) 4)
      ;; float32 _h
        (sys::poke _h (send s :buffer) (send s :count) :float) (incf (stream-count s) 4)
-     ;; uint8 _cls
-       (write-byte _cls s)
-     ;; float32 _confidence
-       (sys::poke _confidence (send s :buffer) (send s :count) :float) (incf (stream-count s) 4)
+     ;; uint8 _clss
+       (write-byte _clss s)
+     ;; float32 _score
+       (sys::poke _score (send s :buffer) (send s :count) :float) (incf (stream-count s) 4)
      ;;
      (if (null strm) (get-output-stream-string s))))
   (:deserialize
@@ -96,26 +96,19 @@
      (setq _w (sys::peek buf ptr- :float)) (incf ptr- 4)
    ;; float32 _h
      (setq _h (sys::peek buf ptr- :float)) (incf ptr- 4)
-   ;; uint8 _cls
-     (setq _cls (sys::peek buf ptr- :char)) (incf ptr- 1)
-   ;; float32 _confidence
-     (setq _confidence (sys::peek buf ptr- :float)) (incf ptr- 4)
+   ;; uint8 _clss
+     (setq _clss (sys::peek buf ptr- :char)) (incf ptr- 1)
+   ;; float32 _score
+     (setq _score (sys::peek buf ptr- :float)) (incf ptr- 4)
    ;;
    self)
   )
 
-(setf (get detection::Detection :md5sum-) "b6ef12160302895f4532528b12bd7ec3")
+(setf (get detection::Detection :md5sum-) "605d6371c30b664ec10c76dcf5a9542d")
 (setf (get detection::Detection :datatype-) "detection/Detection")
 (setf (get detection::Detection :definition-)
       "# Detection.msg
 ## Bounding box with class and confidence
-
-# Constants
-
-# TODO
-# uint8 car
-# uint8 armor_module
-# ...
 
 # Bounding box
 float32 x
@@ -124,13 +117,13 @@ float32 w
 float32 h
 
 # class
-uint8 cls
+uint8 clss
 
-float32 confidence
+float32 score
 ")
 
 
 
-(provide :detection/Detection "b6ef12160302895f4532528b12bd7ec3")
+(provide :detection/Detection "605d6371c30b664ec10c76dcf5a9542d")
 
 
