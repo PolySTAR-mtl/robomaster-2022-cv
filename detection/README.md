@@ -69,7 +69,7 @@ A git submodule is basically just a pointer to a specific commit from another re
 
 First, you need to install OpenCV (if it's not on the system already). You can check here: https://vitux.com/opencv_ubuntu/ to build it from source (more realiable!).
 Then, you need to `make` the darknet repository on your system to use it.
-You should only set the flags `GPU`, `CUDNN` and `OPENCV` to `1` depending if you actually use them. See https://pjreddie.com/darknet/install/ for more information.
+You should only set the flags `GPU`, `CUDNN` and `OPENCV` to `1` depending if you actually use them. `LIBSO` might need to be setup to `1` on your machine (not the case everytime, try and see!), but it needs to be set on Jetson. See https://pjreddie.com/darknet/install/ for more information.
 You also need to change the `ARCH=` flag in order to set the configuration used of your system (for Jetson Xavier: `ARCH= -gencode arch=compute_72,code=[sm_72,compute_72]`)
 
 ## Preparing for training the model
