@@ -167,7 +167,7 @@ As mentioned in the previous section, we need to optimize the network to yield g
 
 We will actually use a wrapper of this SDK which allow to automatically parse and optimize Darknet network. The repository is: https://github.com/marcoslucianops/DeepStream-Yolo
 
-Follow requirements to install dependencies. In the case of simple Yolov3, everything should be installed on the Jetson already (but, if needed, here the getting started for Jetson NX: https://developer.nvidia.com/embedded/learn/get-started-jetson-xavier-nx-devkit to install *JetPack 4.6.1* and https://developer.nvidia.com/deepstream-sdk to install *DeepStream SDK* and use the repository link to `git clone https://github.com/marcoslucianops/DeepStream-Yolo`). 
+Follow requirements to install dependencies. In the case of simple Yolov3, everything should be installed on the Jetson already (but, if needed, here the getting started for Jetson NX: https://developer.nvidia.com/embedded/learn/get-started-jetson-xavier-nx-devkit to install *JetPack 4.6.1* and https://developer.nvidia.com/deepstream-sdk to install *DeepStream SDK*. If you did the submodule command at the beginning, you should have *DeepStream-Yolo* installed already. 
 
 You might need to add to the path the cuda library. To do that, add at the end of the `~/.bashrc` the following lines and restart the terminal:
 
@@ -176,7 +176,7 @@ export PATH="/usr/local/cuda-10.2/bin:$PATH"
 export LD_LIBRARY_PATH="/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH"
 ```
 
-Once installed, just follow the DeepStream-Yolo repostiory instructions: https://github.com/marcoslucianops/DeepStream-Yolo#basic-usage
+Just follow the DeepStream-Yolo repostiory instructions: https://github.com/marcoslucianops/DeepStream-Yolo#basic-usage to see how it works. DON'T FORGET TO ACTUALLY BUILD INSIDE DEEPSTREAM-YOLO REPOSITORY: `CUDA_VER=10.2 make -C nvdsinfer_custom_impl_Yolo`, otherwise it will fail!
 
 To test the installation, just put the *.weights* and *.cfg* previously trained in the DeepStream-Yolo repository. Modify the `labels.txt` file in the repostiory by putting the labels (corresponds to the `dji.names` file in darknet training). Then, modify the `config_infer_primary.txt` file as follow:
 
