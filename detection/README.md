@@ -27,6 +27,11 @@
 &nbsp;&nbsp;&nbsp;&nbsp;├── Makefile <br>
 &nbsp;&nbsp;&nbsp;&nbsp;└── deepstream_source_bin.c <br>
 
+# Note before beginning
+
+This doc is thought to detail how detection part was trained/tested both on computer using a GPU or on Jetson WITHOUT using ROS. 
+If you want to have the setup with ROS, please check https://github.com/PolySTAR-mtl/robomaster-2022-cv/edit/main/doc/ros_from_scratch.md.
+
 # Small note on submodules
 
 The `darknet` [repository](git@github.com:AlexeyAB/darknet.git) is included as a git submodule. In
