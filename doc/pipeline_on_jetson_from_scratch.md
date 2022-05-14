@@ -12,7 +12,7 @@ Check https://github.com/PolySTAR-mtl/robomaster-2022-cv/tree/main/detection#dep
 
 ## Setup robomaster repository
 
-First, clone the repostiory `git clone https://github.com/PolySTAR-mtl/robomaster-2022-cv.git`. Then, install [submodule](https://github.com/PolySTAR-mtl/robomaster-2022-cv/tree/main/detection#small-note-on-submodules)
+First, clone the repostiory `git clone https://github.com/PolySTAR-mtl/robomaster-2022-cv.git` in the `home/polystar` directory (if you do it somewhere else, you will need to change [deepstream-infer.txt](https://github.com/PolySTAR-mtl/robomaster-2022-cv/blob/main/ros_ws/data/deepstream-infer.txt) parameters). Then, install [submodule](https://github.com/PolySTAR-mtl/robomaster-2022-cv/tree/main/detection#small-note-on-submodules)
 and install [Darknet](https://github.com/PolySTAR-mtl/robomaster-2022-cv/tree/main/detection#setting-up-darknet-environment). You can first verify everything works with detection on it's
 own by running the inference presented [here](https://github.com/PolySTAR-mtl/robomaster-2022-cv/tree/main/detection#setting-up-darknet-environment). Make sure you also properly setup up DeepStream as described [here](https://github.com/PolySTAR-mtl/robomaster-2022-cv/tree/main/detection#deployment-on-jetson). 
 
