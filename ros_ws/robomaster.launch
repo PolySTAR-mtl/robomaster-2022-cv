@@ -3,6 +3,8 @@
     <arg name="workspace" value="$(dirname)"/>
 
     <!-- Nodes -->
+    <include file="$(find decision)/launch/simple_decision.launch"/>
+	
     <include file="$(find serial)/launch/serial.launch">
         <arg name="params_path" value="$(arg workspace)/data/param-serial.yaml"/>
     </include>
@@ -14,6 +16,7 @@
 	<arg name="darknet" value="false"/>
     </include>
 
+    <!-- For Darknet -->
     <!-- Camera -->
     <!--<remap from="/main_camera/image_raw" to="/detection/image_in"/>-->
     <!--<include file="$(find jetson_camera)/launch/jetson_camera.launch"/>-->
