@@ -7,6 +7,8 @@ Work repository for the Computer Vision team
 This repository contains the work of PolySTAR's computer vision team for the 2022 RoboMaster
 competition, organized by DJI.
 
+For a step by step example of how to run the code on Jetson, please check [here](https://github.com/PolySTAR-mtl/robomaster-2022-cv/blob/main/doc/pipeline_on_jetson_from_scratch.md)
+
 ## Repo organization
 
 - `doc/` : General & specific documentation about our work. Everything should be documented ;)
@@ -18,23 +20,23 @@ competition, organized by DJI.
 ### ROS
 
 - ROS melodic / noetic
-  - `ros-melodic-cv-bridge`
+- ROS packages
+  - `ros-<ros-distribution>-cv-bridge`
+  - `ros-<ros-distribution>-image-view`
+  - `ros-<ros-distribution>-vision-opencv`
+  - `ros-<ros-distribution>-camera-info-manager`
+  - `ros-<ros-distribution>-video-stream-opencv`
 - OpenCV & Python bindings
 
 ### Detection
 
-This project relies on the `darknet` library, which is included as a submodule. It is required
-to build the ROS workspace. You can either install the library (`make install`) in a common
-place, or specify the path of the library when building (don't forget to build it beforehand!) :
+This project relies on the `darknet` library to train/test the model as well as the `deepstream` library to run on Jetson.
+`darknet` is included as a [submodule](https://github.com/PolySTAR-mtl/robomaster-2022-cv/blob/main/detection/README.md#small-note-on-submodules) and `deepstream` is already installed on the Jetson. They are both required
+to build the ROS workspace. 
 
-```bash
-catkin_make -DDARKNET_PATH=../detection/darknet
-```
+To setup darknet, please check [here](https://github.com/PolySTAR-mtl/robomaster-2022-cv/blob/main/detection/README.md#setting-up-darknet-environment). To train/test the model with `darknet` on computer, please check [here](https://github.com/PolySTAR-mtl/robomaster-2022-cv/blob/main/detection/README.md#preparing-for-training-the-model). 
 
-If you build it using the `Makefile`, make sure to set `LIBSO=1` to build the shared library,
-and enable the relevant options if you can : OpenMP, GPU, CUDA, CUDNN, CUDNN_HALF.
-
-**TODO** : list of package requirements
+If `deepstream` is already installed, you still need to add up a wrapper to run darknet model, check [here](https://github.com/PolySTAR-mtl/robomaster-2022-cv/blob/main/detection/README.md#deployment-on-jetson)
 
 ## Code guidelines
 
