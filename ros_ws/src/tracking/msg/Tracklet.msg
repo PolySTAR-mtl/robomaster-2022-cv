@@ -1,5 +1,8 @@
-# Detection.msg
-## Bounding box with class and confidence
+# Tracklet.msg
+## Bounding box with class
+
+# ID
+string id
 
 # Bounding box
 float32 x

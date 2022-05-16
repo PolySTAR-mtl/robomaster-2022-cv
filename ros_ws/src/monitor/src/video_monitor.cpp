@@ -72,7 +72,7 @@ void VideoMonitor::callbackDetections(
 
     auto img_rects = curr_image.clone();
     for (auto& det : dets->detections) {
-        auto color = getColor(det.cls);
+        auto color = getColor(det.clss);
         cv::Point p1{static_cast<int>(det.x - det.w / 2),
                      static_cast<int>(det.y - det.h / 2)};
         cv::Point p2{static_cast<int>(det.x + det.w / 2),
@@ -86,7 +86,7 @@ void VideoMonitor::callbackDetections(
         cv::rectangle(img_rects, p1, p2, color, cv::FILLED);
         p1.y += MONITOR_FONT_PADDING + MONITOR_FONT_SIZE;
 
-        cv::putText(img_rects, getClassName(det.cls), p1, MONITOR_FONT_FACE,
+        cv::putText(img_rects, getClassName(det.clss), p1, MONITOR_FONT_FACE,
                     static_cast<double>(MONITOR_FONT_SIZE) / 12.,
                     cv::Scalar(MONITOR_FONT_COLOR));
     }

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>serial</name>
+  <name>tracking</name>
   <version>0.1.0</version>
-  <description>Serial interface to the Control and Systems team board A</description>
+  <description>Bounding box tracking</description>
 
   <maintainer email="sebastien.darche@polymtl.ca">Sébastien Darche</maintainer>
 
@@ -12,6 +12,10 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>message_runtime</exec_depend>
+  <depend>detection</depend>
+  
   <export></export>
 
 </package>

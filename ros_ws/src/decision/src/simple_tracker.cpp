@@ -12,19 +12,19 @@
 
 #include <ros/ros.h>
 
-#include "detection/Detections.h"
+#include "tracking/Tracklets.h"
 #include "serial/Target.h"
 
 class SimpleTracker {
   public:
     SimpleTracker(ros::NodeHandle& n) : nh(n) {
-        sub_detections = nh.subscribe("detections", 1,
-                                      &SimpleTracker::callbackDetections, this);
+        sub_tracklets = nh.subscribe("tracking/tracklets", 1,
+                                      &SimpleTracker::callbackTracklets, this);
 
         pub_target = nh.advertise<serial::Target>("target", 1);
     }
 
-    void callbackDetections(const detection::DetectionsConstPtr& dets) {
+    void callbackTracklets(const tracking::TrackletsConstPtr& trks) {
         auto distance = [](auto d1, auto d2) {
             return std::sqrt(std::pow(d1.x - d2.x, 2) +
                              std::pow(d1.y - d2.y, 2));
@@ -34,31 +34,30 @@ class SimpleTracker {
 
         int i = 0;
 
-        for (auto det : dets->detections) {
-            auto dist = distance(last_det, det);
+        for (auto trk : trks->tracklets) {
+            auto dist = distance(last_trk, trk);
             if (dist < best_dist) {
                 index = i;
                 best_dist = dist;
             }
-
             ++i;
         }
 
         if (index != -1) {
-            last_det = dets->detections[index];
-            pub_target.publish(toTarget(last_det));
+            last_trk = trks->tracklets[index];
+            pub_target.publish(toTarget(last_trk));
         }
     }
 
-    serial::Target toTarget(detection::Detection& det) {
+    serial::Target toTarget(tracking::Tracklet& trk) {
         serial::Target target;
 
-	std::cout << "Det : " << det.x << " ( " << det.w << " ) " << det.y << " ( " << det.h << " )\n";
+	    std::cout << "Det : " << trk.x << " ( " << trk.w << " ) " << trk.y << " ( " << trk.h << " )\n";
 
-        auto x_c = det.x + det.w / 2 - im_w / 2;
-        auto y_c = det.y + det.h / 2 - im_h / 2;
+        auto x_c = trk.x + trk.w / 2 - im_w / 2;
+        auto y_c = trk.y + trk.h / 2 - im_h / 2;
 
-	std::cout << "x_c = " << x_c << " ; y_c = " << y_c << '\n';
+	    std::cout << "x_c = " << x_c << " ; y_c = " << y_c << '\n';
 
         uint16_t theta = std::floor((y_c * alpha_y + M_PI_2) * 1000.f);
         int16_t phi = std::floor(x_c * alpha_x * 1000.f);
@@ -74,10 +73,10 @@ class SimpleTracker {
 
   private:
     ros::NodeHandle& nh;
-    ros::Subscriber sub_detections;
+    ros::Subscriber sub_tracklets;
     ros::Publisher pub_target;
 
-    detection::Detection last_det;
+    tracking::Tracklet last_trk;
 
     float im_w = 416 / 2;
     float im_h = 416 / 2;
