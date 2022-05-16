@@ -16,6 +16,8 @@
 	<arg name="darknet" value="false"/>
     </include>
 
+    <include file="$(find tracking)/launch/tracking.launch"/>
+
     <!-- For Darknet -->
     <!-- Camera -->
     <!--<remap from="/main_camera/image_raw" to="/detection/image_in"/>-->
