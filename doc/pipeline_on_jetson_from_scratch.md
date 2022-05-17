@@ -25,12 +25,80 @@ Then, you need to install the different packages used by ROS:
 
 `sudo apt-get install ros-<ros-distribution>-cv-bridge ros-<ros-distribution>-image-view ros-<ros-distribution>-vision-opencv ros-<ros-distribution>-camera-info-manager ros-<ros-distribution>-video-stream-opencv`
 
+## Setup python 3.8
+
+By default, python 3.6 is installed but the 3.8 is needed. So you will need to `sudo apt-get install python3.8 python3.8-dev` as well as to make it the defaukt python version.
+
+```
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8
+```
+
+(we use python3 in the script, but just in case!)
+
+While you are at it, install `setuptools`, `scipy` and `filterpy` that are needed for tracking:
+
+`sudo -H python -m pip install setuptools scipy numpy filterpy`
+
+## Configure ROS melodic to work with python 3.8
+
+Skip this part if Noetic is used as ROS distribution. <br>
+Otherwise,
+```
+sudo apt-get install python3-pip python3-yaml
+sudo -H python -m pip install rospkg catkin_pkg
+sudo apt-get install python-catkin-tools
+```
+
+Then, create a different repostiory `cv_bridge_catkin` and: <br>
+```
+catkin config -DPYTHON_EXECUTABLE=/usr/bin/python3 -DPYTHON_INCLUDE_DIR=/usr/include/python3.8 -DPYTHON_LIBRARY=/usr/lib/aarch64-linux-gnu/libpython3.8.so
+catkin config --install
+mkdir src
+cd src
+git clone -b opencv4 https://github.com/fizyr-forks/vision_opencv.git
+cd ../
+catkin build cv_bridge
+source install/setup.bash --extend
+```
+
+For the [reference](https://medium.com/@beta_b0t/how-to-setup-ros-with-python-3-44a69ca36674).
+
+If you get an error about missing libraries, try to install it. <br>
+If you get the following error: 
+```
+Errors     << cv_bridge:install /home/polystar/robomaster-2022-cv/cvbridge_build_ws/logs/cv_bridge/build.install.000.log
+usage: setup.py [global_opts] cmd1 [cmd1_opts] [cmd2 [cmd2_opts] ...]
+   or: setup.py --help [cmd1 cmd2 ...]
+   or: setup.py --help-commands
+   or: setup.py cmd --help
+
+error: option --install-layout not recognized
+CMake Error at catkin_generated/safe_execute_install.cmake:4 (message):
+
+  execute_process(/home/polystar/robomaster-2022-cv/cvbridge_build_ws/build/cv_bridge/catkin_generated/python_distutils_install.sh)
+  returned error code
+Call Stack (most recent call first):
+  cmake_install.cmake:151 (include)
+
+
+make: *** [install] Error 1
+cd /home/polystar/robomaster-2022-cv/cvbridge_build_ws/build/cv_bridge; catkin build --get-env cv_bridge | catkin env -si  /usr/bin/make install; cd -
+```
+
+Go to `/home/polystar/robomaster-2022-cv/<where_you_installed_it>/python_distutils_install.sh` and remove the `--install-layout=deb`.
+
+## Build ROS
+
 Once it is done, you can now prepare ROS by using `catkin_make -DDARKNET_PATH=../detection/darknet -DDEEPSTREAM=True` inside `ros_ws`.
 
 *Note:* Even if Darknet is not directly used in the detection, it still need to be in the catkin_make.
 
+*Note 2:* If some error says some packages are not found, install them. In particular, you might get error on `jibglib` (install `libglib2.0-dev libjson-glib-dev libpurple-dev`) and `gst/rtsp-server/rtsp-server.h: No such file or directory` (install `libgstrtspserver-1.0-dev`).
 
-*Note 2:* You might get error thrown. If so, keep doing `catkin_make -DDARKNET_PATH=../detection/darknet -DDEEPSTREAM=True` until it is gone. Problem is the link in between libraries that are not properly ordered in the CMakeLists and which need to be rethought. But it works! (just need a few retrials).
+*Note 3:* Some components might throw an error that `OpenCV 3` is required. Just go to their `CMakeLists.txt` and change to `OpenCV 4`.
+
+*Note 4:* Even after that, you might get error thrown that some `.h` files are not found. If so, keep doing `catkin_make -DDARKNET_PATH=../detection/darknet -DDEEPSTREAM=True` until it is gone. Problem is the link in between libraries that are not properly ordered in the CMakeLists and which need to be rethought. But it works! (just need a few retrials).
 
 Don't forget to  `source devel/setup.bash`.
 
