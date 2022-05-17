@@ -177,8 +177,8 @@ void Detector::imageCallback(const sensor_msgs::ImagePtr& img) {
         det.y = d.bbox.y * im.h;
         det.w = d.bbox.w * im.w;
         det.h = d.bbox.h * im.h;
-        det.cls = d.best_class_idx;
-        det.confidence = d.prob[det.cls];
+        det.clss = d.best_class_idx;
+        det.score = d.prob[det.clss];
 
         msg.detections.push_back(det);
     }
