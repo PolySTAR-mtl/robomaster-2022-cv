@@ -46,8 +46,8 @@ void deepstreamCallback(void* appCtx_v, void* batch_meta_v) {
 
             detection::Detection det;
 
-            det.cls = obj->class_id;
-            det.confidence = obj->confidence;
+            det.clss = obj->class_id;
+            det.score = obj->confidence;
             det.x = obj->rect_params.left;
             det.y = obj->rect_params.top;
             det.w = obj->rect_params.width;
