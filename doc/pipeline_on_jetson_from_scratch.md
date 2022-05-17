@@ -20,6 +20,7 @@ You can then download the weights (on our google drive in RoboMaster/Equipe-Comp
 
 ## Setup ros
 
+First, install the correct ros distribution, in Jetson case `melodic`, check [here](http://wiki.ros.org/melodic/Installation/Ubuntu).
 Then, you need to install the different packages used by ROS:
 
 `sudo apt-get install ros-<ros-distribution>-cv-bridge ros-<ros-distribution>-image-view ros-<ros-distribution>-vision-opencv ros-<ros-distribution>-camera-info-manager ros-<ros-distribution>-video-stream-opencv`
