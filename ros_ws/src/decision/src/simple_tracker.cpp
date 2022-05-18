@@ -18,7 +18,7 @@
 class SimpleTracker {
   public:
     SimpleTracker(ros::NodeHandle& n, int enemy_color) : nh(n) {
-        sub_tracklets = nh.subscribe("tracking/tracklets", 1,
+        sub_tracklets = nh.subscribe("tracklets", 1,
                                       &SimpleTracker::callbackTracklets, this);
 
         pub_target = nh.advertise<serial::Target>("target", 1);
