@@ -37,7 +37,7 @@ class SimpleTracker {
 
         for (auto trk : trks->tracklets) {
             auto dist = distance(last_trk, trk);
-            if (dist < best_dist && enemy_color == trk.clss) {
+            if (dist < best_dist && enemy_color == int(trk.clss)) {
                 index = i;
                 best_dist = dist;
             }
