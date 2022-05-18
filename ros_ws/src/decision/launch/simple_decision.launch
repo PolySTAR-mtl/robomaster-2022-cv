@@ -1,7 +1,12 @@
 <launch>
+    <!-- Args -->
+    <arg name="params_path"/>
+
     <!-- Nodes -->
     <remap from="/decision/detections" to="/detection/detections"/>
     <node name="decision" pkg="decision" type="simple_tracker" output="screen">
+        <!-- Load parameters from file -->
+        <rosparam command="load" file="$(arg params_path)"/>
     </node>
 
 </launch>
