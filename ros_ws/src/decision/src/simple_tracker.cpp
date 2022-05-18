@@ -17,11 +17,12 @@
 
 class SimpleTracker {
   public:
-    SimpleTracker(ros::NodeHandle& n) : nh(n) {
+    SimpleTracker(ros::NodeHandle& n, int enemy_color) : nh(n) {
         sub_tracklets = nh.subscribe("tracking/tracklets", 1,
                                       &SimpleTracker::callbackTracklets, this);
 
         pub_target = nh.advertise<serial::Target>("target", 1);
+	std::cout << "Enemy color set to be: " << (enemy_color == 0 ?  "red" : "blue") << "\n";
     }
 
     void callbackTracklets(const tracking::TrackletsConstPtr& trks) {
@@ -36,7 +37,7 @@ class SimpleTracker {
 
         for (auto trk : trks->tracklets) {
             auto dist = distance(last_trk, trk);
-            if (dist < best_dist) {
+            if (dist < best_dist && enemy_color == trk.clss) {
                 index = i;
                 best_dist = dist;
             }
@@ -75,6 +76,7 @@ class SimpleTracker {
     ros::NodeHandle& nh;
     ros::Subscriber sub_tracklets;
     ros::Publisher pub_target;
+    int enemy_color;
 
     tracking::Tracklet last_trk;
 
@@ -89,8 +91,17 @@ class SimpleTracker {
 int main(int argc, char** argv) {
     ros::init(argc, argv, "decision");
     ros::NodeHandle nh("~");
+	
+    int enemy_color;
 
-    SimpleTracker tracker(nh);
+    if (!nh.getParam("enemy_color", enemy_color)) {
+        throw std::runtime_error("Enemy color not specified");
+    }
+    if (enemy_color != 0 and enemy_color != 1) {
+        throw std::runtime_error("Enemy color should be 0 (red) or 1 (blue)");
+    }
+
+    SimpleTracker tracker(nh, enemy_color);
 
     ros::spin();
 }
