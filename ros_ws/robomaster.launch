@@ -6,7 +6,8 @@
     <include file="$(find decision)/launch/simple_decision.launch">
         <arg name="params_path" value="$(arg workspace)/data/param-decision.yaml"/>
     </include>
-	
+
+    <remap from="/serial/target" to="/decision/target"/>
     <include file="$(find serial)/launch/serial.launch">
         <arg name="params_path" value="$(arg workspace)/data/param-serial.yaml"/>
     </include>
