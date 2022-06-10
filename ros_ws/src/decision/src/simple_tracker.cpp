@@ -17,7 +17,7 @@
 
 class SimpleTracker {
   public:
-    SimpleTracker(ros::NodeHandle& n, int enemy_color) : nh(n) {
+    SimpleTracker(ros::NodeHandle& n, int _enemy_color) : nh(n), enemy_color(_enemy_color) {
         sub_tracklets = nh.subscribe("tracklets", 1,
                                       &SimpleTracker::callbackTracklets, this);
 
