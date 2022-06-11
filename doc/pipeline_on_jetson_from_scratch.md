@@ -36,9 +36,9 @@ sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8
 
 (we use python3 in the script, but just in case!)
 
-While you are at it, install `setuptools`, `scipy` and `filterpy` that are needed for tracking:
+While you are at it, install a few libraries that are needed for tracking:
 
-`sudo -H python -m pip install setuptools scipy numpy filterpy`
+`sudo -H python -m pip install cython setuptools scipy numpy filterpy`
 
 ## Configure ROS melodic to work with python 3.8
 
