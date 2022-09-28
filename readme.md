@@ -1,11 +1,11 @@
-# PolySTAR - CV Robomaster 2022
+# PolySTAR - CV Robomaster 2023
 
 Work repository for the Computer Vision team
 
 ## Introduction
 
-This repository contains the work of PolySTAR's computer vision team for the 2022 RoboMaster
-competition, organized by DJI.
+This repository contains the work of PolySTAR's computer vision team for the 2023 RoboMaster
+competition, organized by DJI. Based on last year's repo.
 
 For a step by step example of how to run the code on Jetson, please check [here](https://github.com/PolySTAR-mtl/robomaster-2022-cv/blob/main/doc/pipeline_on_jetson_from_scratch.md)
 
