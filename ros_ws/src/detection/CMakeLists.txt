@@ -129,14 +129,24 @@ include_directories(
   ${Darknet_INCLUDE_DIRS}
 )
 
-add_executable(detection
-  src/detection_node.cpp
-  src/detector.cpp
-)
+if(DEEPSTREAM)
 
 add_executable(deepstream_detection
   src/deepstream_node.cpp
   src/deepstream_detector.cpp
+)
+
+target_link_libraries(deepstream_detection
+  ${catkin_LIBRARIES}
+  deepstream-runner
+)
+
+add_dependencies(deepstream_detection ${${PROJECT_NAME}_EXPORTED_TARGETS})
+else()
+
+add_executable(detection
+  src/detection_node.cpp
+  src/detector.cpp
 )
 
 target_link_libraries(detection
@@ -145,12 +155,8 @@ target_link_libraries(detection
   ${OpenCV_LIBRARIES}
 )
 
-target_link_libraries(deepstream_detection
-  ${catkin_LIBRARIES}
-  deepstream-runner
-)
-
 add_dependencies(detection ${${PROJECT_NAME}_EXPORTED_TARGETS})
+endif()
 
 #############
 ## Testing ##
