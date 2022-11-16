@@ -40,6 +40,14 @@ target_link_libraries(simple_tracker
   ${catkin_LIBRARIES}
 )
 
+add_executable(tracker_sentry
+  src/tracker_sentry.cpp
+)
+
+target_link_libraries(tracker_sentry
+  ${catkin_LIBRARIES}
+)
+
 #############
 ## Testing ##
 #############
