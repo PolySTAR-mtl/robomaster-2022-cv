@@ -1,4 +1,4 @@
-/** \file simple_tracker.cpp
+/** \file tracker_sentry.cpp
  * \brief Simple targeting node
  *
  * \author Sébastien Darche <sebastien.darche@polymtl.ca>
@@ -9,23 +9,25 @@
 #include <algorithm>
 
 // ROS includes
-
+// changer les 1
 #include <ros/ros.h>
+#include <cmath>
 
 #include "serial/Target.h"
 #include "tracking/Tracklets.h"
 
-class SimpleTracker {
+class SentryTracker {
   public:
-    SimpleTracker(ros::NodeHandle& n, int _enemy_color)
-        : nh(n), enemy_color(_enemy_color) {
+    SentryTracker(ros::NodeHandle& n, int _enemy_color, float freq)
+        : nh(n), enemy_color(_enemy_color), freq_(freq) {
         sub_tracklets = nh.subscribe("tracklets", 1,
-                                     &SimpleTracker::callbackTracklets, this);
+                                     &SentryTracker::callbackTracklets, this); // a chaque fois que tracklets recoit un message, callbackTracklets() est appellee
 
         pub_target = nh.advertise<serial::Target>("target", 1);
         std::cout << "Enemy color set to be: "
                   << (enemy_color == 0 ? "red" : "blue") << "\n";
     }
+
 
     void callbackTracklets(const tracking::TrackletsConstPtr& trks) {
         auto distance = [](auto d1, auto d2) {
@@ -50,6 +52,16 @@ class SimpleTracker {
             last_trk = trks->tracklets[index];
             pub_target.publish(toTarget(last_trk));
         }
+        hasDetected_ = true;
+    }
+
+    bool hasDetected() 
+    { 
+        if (hasDetected_) {
+            hasDetected_ = false;
+            return true;
+        }
+        return false;
     }
 
     serial::Target toTarget(tracking::Tracklet& trk) {
@@ -75,13 +87,31 @@ class SimpleTracker {
         return target;
     }
 
+    float degToRad(float deg) { 
+        return deg * M_PI / 180.;
+    }
+
+    void search() { 
+        count_++;
+        theta_ = degToRad(sin(static_cast<float>(count_)/ freq_) * maxAngle);
+   
+        serial::Target target;
+
+        target.theta = theta_;
+        pub_target.publish(target);
+    }
   private:
     ros::NodeHandle& nh;
     ros::Subscriber sub_tracklets;
     ros::Publisher pub_target;
     int enemy_color;
+    float maxAngle = 1;
+    float freq_;
+    int count_ = 0;
 
     tracking::Tracklet last_trk;
+
+    bool hasDetected_ = false;
 
     float im_w = 416 / 2;
     float im_h = 416 / 2;
@@ -89,6 +119,7 @@ class SimpleTracker {
     // Scaling factor
     float alpha_y = 0.001;
     float alpha_x = 0.01;
+    float theta_ = 0;
 };
 
 int main(int argc, char** argv) {
@@ -103,8 +134,19 @@ int main(int argc, char** argv) {
     if (enemy_color != 0 and enemy_color != 1) {
         throw std::runtime_error("Enemy color should be 0 (red) or 1 (blue)");
     }
+    float rate = 30;
+    SentryTracker tracker(nh, enemy_color, rate);
 
-    SimpleTracker tracker(nh, enemy_color);
+    ros::Rate loop_rate(rate);
 
-    ros::spin();
+    while (ros::ok()) 
+    {
+        ros::spinOnce(); //spinOnce() fait que tu verifies si entre mtn et le dernier spinOnce() il sest passe qqchose
+        if (!tracker.hasDetected()) //il faut trouver une maniere de lui dire "if tu ne vois/track rien et que tu as pas atteind ta limite de rotation"
+        {   
+           tracker.search();
+        }
+
+        loop_rate.sleep();
+    }
 }
